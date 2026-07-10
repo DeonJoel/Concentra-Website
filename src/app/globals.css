@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
+/* 1. Default Light Mode Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8EBFF; 
+  --foreground: #1E293B; 
 }
 
+/* 2. Tell Tailwind V4 about your custom setup */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Your Concentra Brand Colors */
+  --color-concentra-purple: #7A2B6B;
+  --color-concentra-green: #2A9D40;
+  --color-industrial-slate: #1E293B;
+  --color-blueprint-bg: #F8EBFF;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 3. Future Dark Mode Variables */
+.dark {
+  --background: #0f172a; 
+  --foreground: #F8EBFF; 
 }
 
+/* 4. Global Body Properties */
 body {
-  background: var(--background);
+  background-color: var(--background);
+  
+  /* GLOBAL STICKY BLUEPRINT SETUP */
+  background-image: url('/blueprint-placeholder.png'); /* Drop your asset in the 'public' folder with this name */
+  background-attachment: fixed; /* This makes the blueprint "sticky" so content glides smoothly over it */
+  background-position: center;
+  background-size: cover; /* Stretches safely across large screens without distortion */
+  
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
