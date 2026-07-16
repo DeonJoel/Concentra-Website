@@ -31,7 +31,7 @@ body {
   background-color: var(--background);
   
   /* GLOBAL STICKY BLUEPRINT SETUP */
-  background-image: url('/blueprint-placeholder.png'); /* Drop your asset in the 'public' folder with this name */
+  background-image: url('/.blueprint-placeholder.png'); /* Drop your asset in the 'public' folder with this name */
   background-attachment: fixed; /* This makes the blueprint "sticky" so content glides smoothly over it */
   background-position: center;
   background-size: cover; /* Stretches safely across large screens without distortion */

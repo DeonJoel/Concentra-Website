@@ -67,7 +67,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4 text-xs font-bold text-industrial-slate">
             <Link href="/careers" className="hover:text-concentra-purple transition">Careers</Link>
             <span className="text-gray-300">|</span>
-            <Link href="/facilities" className="hover:text-concentra-purple transition">Facilities</Link>
+            <Link href="/request-quote" className="hover:text-concentra-purple transition">Request Quote</Link>
             <span className="text-gray-300">|</span>
             <button className="bg-concentra-green hover:bg-green-600 text-white px-5 py-2 rounded-md transition duration-300 ml-2 shadow-md">
               Contact Us
@@ -97,7 +97,7 @@ export default function Navbar() {
           <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple">Company Details</Link>
           <hr className="my-2" />
           <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple">Careers</Link>
-          <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple">Facilities</Link>
+          <Link href="/request-quote" className="text-industrial-slate font-semibold hover:text-concentra-purple">Request Quote</Link>
           <button className="bg-concentra-green text-white font-bold py-3 mt-2 rounded-md w-full">
             Contact Us
           </button>
