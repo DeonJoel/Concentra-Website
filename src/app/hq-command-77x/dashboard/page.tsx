@@ -67,7 +67,7 @@ export default function SecureDashboard() {
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-end mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 mb-2" style={{ color: "var(--color-concentra-purple, #4B0082)" }}>
+          <h1 className="text-3xl font-extrabold text-slate-900 mb-2" style={{ color: "var(--color-concentra-green)" }}>
             Live Enquiries
           </h1>
           <p className="text-slate-600 flex items-center gap-2">

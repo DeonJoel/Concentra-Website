@@ -34,3 +34,63 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+```
+concentra-portal
+├─ AGENTS.md
+├─ CLAUDE.md
+├─ eslint.config.mjs
+├─ next.config.ts
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ public
+│  ├─ blueprint-placeholder.png
+│  ├─ file.svg
+│  ├─ globe.svg
+│  ├─ next.svg
+│  ├─ vercel.svg
+│  └─ window.svg
+├─ README.md
+├─ src
+│  ├─ app
+│  │  ├─ (public)
+│  │  │  ├─ admin
+│  │  │  │  └─ enquiries
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ layout.tsx
+│  │  │  ├─ page.tsx
+│  │  │  └─ request-quote
+│  │  │     ├─ enquiry
+│  │  │     │  └─ page.tsx
+│  │  │     └─ page.tsx
+│  │  ├─ favicon.ico
+│  │  ├─ globals.css
+│  │  └─ hq-command-77x
+│  │     ├─ dashboard
+│  │     │  ├─ content
+│  │     │  │  └─ page.tsx
+│  │     │  ├─ layout.tsx
+│  │     │  ├─ page.tsx
+│  │     │  └─ rfq
+│  │     │     └─ [id]
+│  │     │        └─ page.tsx
+│  │     ├─ layout.tsx
+│  │     └─ page.tsx
+│  ├─ components
+│  │  ├─ home
+│  │  │  ├─ CtaBanner.tsx
+│  │  │  ├─ GlobalReach.tsx
+│  │  │  ├─ HeroSlider.tsx
+│  │  │  ├─ OurExpertise.tsx
+│  │  │  ├─ QualityCertificates.tsx
+│  │  │  └─ TrustedBy.tsx
+│  │  └─ shared
+│  │     ├─ CADViewer.tsx
+│  │     ├─ Footer.tsx
+│  │     ├─ GridOverlay.tsx
+│  │     └─ Navbar.tsx
+│  └─ proxy.ts
+└─ tsconfig.json
+
+```

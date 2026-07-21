@@ -5,16 +5,19 @@ import { UploadCloud, CheckCircle, Settings, Cpu } from "lucide-react";
 
 export default function EnquiryPortal() {
   const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<any>(null);
   
-  // New state to highlight the box when a file is hovering over it
+  // State to highlight the box when a file is hovering over it
   const [isDragging, setIsDragging] = useState(false);
 
   // --- DRAG AND DROP HANDLERS ---
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault(); // Prevents the browser from opening the PDF in a new tab
+    e.preventDefault(); 
     setIsDragging(true);
   };
 
@@ -27,23 +30,26 @@ export default function EnquiryPortal() {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      setFile(e.dataTransfer.files[0]); // Grab the dropped file!
+      setFile(e.dataTransfer.files[0]); 
     }
   };
   // ------------------------------
 
   const handleRealUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !file) return;
+    if (!email || !companyName || !quantity || !file) return;
 
     setIsAnalyzing(true);
     
     const formData = new FormData();
     formData.append("file", file);
     formData.append("email", email);
+    formData.append("company_name", companyName);
+    formData.append("quantity", quantity);
 
     try {
-        const response = await fetch("http://localhost:8000/api/analyze", {
+        // We will hit a new dedicated public endpoint for AI Enquiries
+        const response = await fetch("http://localhost:8000/api/submit-ai-enquiry", {
             method: "POST",
             body: formData,
         });
@@ -75,23 +81,47 @@ export default function EnquiryPortal() {
           <p className="mt-2 text-slate-600">Upload your drawing (PDF/PNG) for immediate feasibility routing.</p>
         </div>
 
-        {/* 
-            THE CONDITIONAL RENDER: 
-            If 'result' is empty, show the upload form.
-            If 'result' has data, hide the form and show the data dashboard.
-        */}
         {!result ? (
           <form onSubmit={handleRealUpload} className="bg-white shadow-xl rounded-2xl p-8">
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-700 mb-2">Work Email</label>
-              <input
-                type="email"
-                required
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                placeholder="engineer@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            
+            {/* Form Inputs Grid */}
+            <div className="mb-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Work Email</label>
+                <input
+                  type="email"
+                  required
+                  className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="engineer@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Acme Corp"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Estimated Quantity</label>
+                  <input
+                    type="number"
+                    required
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="500"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Drag & Drop Zone */}
@@ -158,7 +188,6 @@ export default function EnquiryPortal() {
                   <div className="mb-2 sm:mb-0">
                     <span className="font-bold text-slate-800 mr-2">Step {r.step}:</span>
                     <span className="font-medium text-slate-700">{r.process}</span>
-                    {/* Displaying the machine chosen by the AI */}
                     <p className="text-xs text-slate-500 mt-1">Machine: {r.machine_required}</p>
                   </div>
                   

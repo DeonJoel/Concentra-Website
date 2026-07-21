@@ -26,26 +26,24 @@ export default function CADViewer({ fileUrl }: { fileUrl: string }) {
 
   return (
     <div className="flex flex-col h-full w-full bg-slate-100 relative overflow-hidden">
-      
+
       {/* TOOLBAR */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-white/90 backdrop-blur shadow-lg border border-slate-200 rounded-full px-4 py-2 flex items-center gap-2">
         <button
           onClick={() => setIsZoomMode(false)}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-            !isZoomMode 
-              ? "bg-concentra-purple text-white shadow-md" 
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${!isZoomMode
+              ? "bg-concentra-purple text-white shadow-md"
               : "text-slate-500 hover:bg-slate-100"
-          }`}
+            }`}
         >
           <MousePointer2 className="w-4 h-4" /> Standard Scroll
         </button>
         <button
           onClick={() => setIsZoomMode(true)}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-            isZoomMode 
-              ? "bg-concentra-green text-white shadow-md" 
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${isZoomMode
+              ? "bg-concentra-green text-white shadow-md"
               : "text-slate-500 hover:bg-slate-100"
-          }`}
+            }`}
         >
           <ZoomIn className="w-4 h-4" /> Zoom / Pan Mode
         </button>
@@ -73,7 +71,7 @@ export default function CADViewer({ fileUrl }: { fileUrl: string }) {
             {({ zoomIn, zoomOut, resetTransform }) => (
               <>
                 {/* These inline styles force the wrapper to respect the container boundaries */}
-                <TransformComponent 
+                <TransformComponent
                   wrapperStyle={{ width: "100%", height: "100%" }}
                   contentStyle={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
                 >
@@ -91,11 +89,11 @@ export default function CADViewer({ fileUrl }: { fileUrl: string }) {
                       </div>
                     }
                   >
-                    <Page 
-                      pageNumber={1} 
-                      renderTextLayer={false} 
+                    <Page
+                      pageNumber={1}
+                      renderTextLayer={false}
                       renderAnnotationLayer={false}
-                      renderScale={3} // FIX 1: Crisp high-res rendering
+                      scale={3} // FIX 1: Crisp high-res rendering
                       // FIX 2: CSS overrides to force the massive CAD canvas to shrink to the container
                       className="shadow-2xl border border-slate-300 bg-white flex justify-center items-center [&>canvas]:!max-w-full [&>canvas]:!max-h-full [&>canvas]:!w-auto [&>canvas]:!h-auto"
                     />
