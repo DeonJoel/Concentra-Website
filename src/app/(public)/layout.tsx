@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import Navbar from "@/components/shared/Navbar"; // 1. Import the Navbar
 import GridOverlay from "@/components/shared/GridOverlay"; // 2. Import the Grid
 import Footer from "@/components/shared/Footer"; // 3. Import the Footer
+import Breadcrumb from "@/components/shared/Breadcrumb";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,8 @@ export default function RootLayout({
 
         {/* 1. Global Navbar at the top of every page */}
         <Navbar />
+        {/* The Dynamic Breadcrumb*/}
+        <Breadcrumb />
         
         {/* 2. Inject the GridOverlay here */}
         <GridOverlay />
