@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import NavDropdowns from "./NavDropdowns";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -48,19 +49,8 @@ export default function Navbar() {
           </Link>
 
           {/* 2. DESKTOP CENTER LINKS */}
-          <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-industrial-slate">
-            <div className="flex items-center gap-1 hover:text-concentra-purple cursor-pointer transition">
-              Products
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </div>
-            <div className="flex items-center gap-1 hover:text-concentra-purple cursor-pointer transition">
-              Services
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </div>
-            <div className="flex items-center gap-1 hover:text-concentra-purple cursor-pointer transition">
-              Company Details
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </div>
+          <div className="hidden lg:flex items-center">
+            <NavDropdowns />
           </div>
 
           {/* 3. DESKTOP RIGHT LINKS & CTA */}

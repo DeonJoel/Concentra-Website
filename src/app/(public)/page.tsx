@@ -58,13 +58,10 @@ export default async function Home() {
     <main className="min-h-screen">
       
       {/* 1. Hero Slider Section */}
-      <HeroSlider slides={heroSlides} />
+      <HeroSlider />
       
       {/* 2. The Trusted By Banner */}
-      <TrustedBy 
-        heading={getValue("trusted_by", "heading", "Trusted By Industry Leaders In Precision Machining")}
-        logos={getArray("trusted_by").filter((item: any) => item.content_key.startsWith("logo_"))}
-      />
+      <TrustedBy />
 
       {/* 3. Expertise Bento Box Grid */}
       <OurExpertise 

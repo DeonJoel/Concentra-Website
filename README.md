@@ -39,6 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 concentra-portal
 ├─ AGENTS.md
 ├─ CLAUDE.md
+├─ components.json
 ├─ eslint.config.mjs
 ├─ next.config.ts
 ├─ package-lock.json
@@ -68,13 +69,17 @@ concentra-portal
 │  │  ├─ globals.css
 │  │  └─ hq-command-77x
 │  │     ├─ dashboard
+│  │     │  ├─ analytics
+│  │     │  │  └─ page.tsx
 │  │     │  ├─ content
 │  │     │  │  └─ page.tsx
 │  │     │  ├─ layout.tsx
 │  │     │  ├─ page.tsx
-│  │     │  └─ rfq
-│  │     │     └─ [id]
-│  │     │        └─ page.tsx
+│  │     │  ├─ rfq
+│  │     │  │  └─ [id]
+│  │     │  │     └─ page.tsx
+│  │     │  └─ users
+│  │     │     └─ page.tsx
 │  │     ├─ layout.tsx
 │  │     └─ page.tsx
 │  ├─ components
@@ -85,11 +90,17 @@ concentra-portal
 │  │  │  ├─ OurExpertise.tsx
 │  │  │  ├─ QualityCertificates.tsx
 │  │  │  └─ TrustedBy.tsx
-│  │  └─ shared
-│  │     ├─ CADViewer.tsx
-│  │     ├─ Footer.tsx
-│  │     ├─ GridOverlay.tsx
-│  │     └─ Navbar.tsx
+│  │  ├─ shared
+│  │  │  ├─ Breadcrumb.tsx
+│  │  │  ├─ CADViewer.tsx
+│  │  │  ├─ Footer.tsx
+│  │  │  ├─ GridOverlay.tsx
+│  │  │  ├─ Navbar.tsx
+│  │  │  └─ NavDropdowns.tsx
+│  │  └─ ui
+│  │     └─ navigation-menu.tsx
+│  ├─ lib
+│  │  └─ utils.ts
 │  └─ proxy.ts
 └─ tsconfig.json
 
