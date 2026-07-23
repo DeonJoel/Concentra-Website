@@ -59,9 +59,9 @@ export default function Navbar() {
             <span className="text-gray-300">|</span>
             <Link href="/request-quote" className="hover:text-concentra-purple transition">Request Quote</Link>
             <span className="text-gray-300">|</span>
-            <button className="bg-concentra-green hover:bg-green-600 text-white px-5 py-2 rounded-md transition duration-300 ml-2 shadow-md">
+            <Link href="/contact-us"><button className="bg-concentra-green hover:bg-green-600 text-white px-5 py-2 rounded-md transition duration-300 ml-2 shadow-md">
               Contact Us
-            </button>
+            </button></Link>
           </div>
 
           {/* 4. MOBILE HAMBURGER ICON */}

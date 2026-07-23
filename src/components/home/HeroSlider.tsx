@@ -2,6 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
+import Link from "next/link"; // <-- 1. Imported Next.js Link
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
@@ -58,9 +59,13 @@ export default function HeroSlider() {
                     <button className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-6 rounded transition duration-300 w-fit shadow-md text-sm">
                       View Manufacturing Facilities
                     </button>
-                    <button className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-6 rounded transition duration-300 w-fit text-sm">
-                      Request a Quote
-                    </button>
+
+                    {/* 2. Wrapped the Request Quote button in the Link tag */}
+                    <Link href="/request-quote">
+                      <button className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-6 rounded transition duration-300 w-fit text-sm">
+                        Request a Quote
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
