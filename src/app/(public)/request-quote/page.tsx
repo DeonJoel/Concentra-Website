@@ -201,7 +201,7 @@ export default function RequestQuote() {
 
               {/* Submit Button */}
               <div className="pt-4">
-                <button type="submit" className="w-full bg-slate-900 text-white py-4 px-8 rounded-xl font-bold text-lg hover:bg-slate-800 transition-colors shadow-lg">
+                <button type="submit" className="w-full bg-concentra-purple text-white py-4 px-8 rounded-xl font-bold text-lg hover:bg-slate-800 transition-colors shadow-lg">
                   Submit Request for Quote
                 </button>
               </div>
