@@ -34,21 +34,16 @@ export default function SecureDashboard() {
     fetchRfqs();
   }, []);
 
-  // Compute the filtered and sorted data before rendering
   const filteredData = useMemo(() => {
     return rfqs
       .filter((rfq) => {
-        // Search Filter (checks client name, company, or part name)
         const matchesSearch =
           rfq.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           rfq.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           rfq.part_name.toLowerCase().includes(searchTerm.toLowerCase());
 
-        // Date Filter
         const rfqDate = new Date(rfq.submitted_at);
         const afterStart = startDate ? rfqDate >= new Date(startDate) : true;
-
-        // Add 1 day to end date to make it inclusive of the entire day selected
         const beforeEnd = endDate
           ? rfqDate <= new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1))
           : true;
@@ -56,12 +51,26 @@ export default function SecureDashboard() {
         return matchesSearch && afterStart && beforeEnd;
       })
       .sort((a, b) => {
-        // Sorting Logic
         const dateA = new Date(a.submitted_at).getTime();
         const dateB = new Date(b.submitted_at).getTime();
         return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
       });
   }, [rfqs, searchTerm, startDate, endDate, sortOrder]);
+
+  // Helper function for the exact requested tag colors
+  const getStatusTag = (status: string) => {
+    switch (status) {
+      case "Approved":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "Rejected":
+        return "bg-red-100 text-red-800 border-red-200";
+      case "Rejected - Email Failed":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      default:
+        // Default is Pending
+        return "bg-purple-100 text-purple-800 border-purple-200"; 
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -141,7 +150,6 @@ export default function SecureDashboard() {
               ) : (
                 filteredData.map((rfq, index) => (
                   <tr key={rfq.id} className="hover:bg-slate-50 transition-colors">
-                    {/* SL Number */}
                     <td className="p-4 text-sm font-medium text-slate-500 text-center">
                       {index + 1}
                     </td>
@@ -159,10 +167,9 @@ export default function SecureDashboard() {
                       <p className="text-xs text-slate-600">Qty: {rfq.quantity} | {rfq.material || "No material specified"}</p>
                     </td>
 
-                    {/* Status Placeholder - Hardcoded for now until backend is updated */}
                     <td className="p-4">
-                      <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-bold border border-yellow-200 inline-block">
-                        Pending Review
+                      <span className={`text-xs px-3 py-1 rounded-full font-bold border inline-block ${getStatusTag(rfq.status || "Pending")}`}>
+                        {rfq.status || "Pending"}
                       </span>
                     </td>
 
