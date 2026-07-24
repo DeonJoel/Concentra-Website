@@ -41,13 +41,14 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* COLUMN 2: Services */}
+            {/* COLUMN 2: Solutions */}
             <div className="w-full lg:w-1/5 flex flex-col lg:border-l border-white/20 lg:pl-8 border-b lg:border-b-0 pb-8 lg:pb-0">
-              <h4 className="font-bold text-sm mb-4 border-b border-white/40 pb-1 w-fit">Services</h4>
+              <h4 className="font-bold text-sm mb-4 border-b border-white/40 pb-1 w-fit">Solutions</h4>
               <ul className="flex flex-col gap-3 text-xs text-gray-300 font-medium">
-                <li><Link href="/" className="hover:text-concentra-green transition">Spindle Remanufacturing</Link></li>
-                <li><Link href="/" className="hover:text-concentra-green transition">Component Manufacturing</Link></li>
-                <li><Link href="/" className="hover:text-concentra-green transition">HSK Tool Clamping</Link></li>
+                <li><Link href="/products/spindles" className="hover:text-concentra-green transition">Spindle Remanufacturing</Link></li>
+                <li><Link href="/services" className="hover:text-concentra-green transition">CNC Machining Services</Link></li>
+                <li><Link href="/products/tool-holding" className="hover:text-concentra-green transition">HSK Tool Clamping</Link></li>
+                <li><Link href="/products/special-purpose-machines" className="hover:text-concentra-green transition">Special Purpose Machines</Link></li>
               </ul>
             </div>
 
@@ -55,9 +56,10 @@ export default function Footer() {
             <div className="w-full lg:w-1/5 flex flex-col lg:border-l border-white/20 lg:pl-8 border-b lg:border-b-0 pb-8 lg:pb-0">
               <h4 className="font-bold text-sm mb-4 border-b border-white/40 pb-1 w-fit">Company</h4>
               <ul className="flex flex-col gap-3 text-xs text-gray-300 font-medium">
-                <li><Link href="/" className="hover:text-concentra-green transition">About Us</Link></li>
-                <li><Link href="/" className="hover:text-concentra-green transition">Our Facility</Link></li>
-                <li><Link href="/" className="hover:text-concentra-green transition">Quality Standards</Link></li>
+                <li><Link href="/company/about" className="hover:text-concentra-green transition">About Us</Link></li>
+                <li><Link href="/company/facilities" className="hover:text-concentra-green transition">Plant & Facilities</Link></li>
+                <li><Link href="/company/quality" className="hover:text-concentra-green transition">Quality Assurance</Link></li>
+                <li><Link href="/careers" className="hover:text-concentra-green transition">Careers / Jobs</Link></li>
               </ul>
             </div>
 
@@ -65,9 +67,9 @@ export default function Footer() {
             <div className="w-full lg:w-1/5 flex flex-col lg:border-l border-white/20 lg:pl-8">
               <h4 className="font-bold text-sm mb-4 border-b border-white/40 pb-1 w-fit">Action</h4>
               <ul className="flex flex-col gap-3 text-xs text-gray-300 font-medium">
-                <li><Link href="/" className="hover:text-concentra-green transition">Request a Quote</Link></li>
-                <li><Link href="/" className="hover:text-concentra-green transition">Contact Engineering</Link></li>
-                <li><Link href="/" className="hover:text-concentra-green transition">Privacy Policy</Link></li>
+                <li><Link href="/request-quote" className="hover:text-concentra-green transition">Request a Quote</Link></li>
+                <li><Link href="/contact-us" className="hover:text-concentra-green transition">Contact Us</Link></li>
+                <li className="mt-4 pt-4 border-t border-white/10"><Link href="/hq-command-77x" className="hover:text-concentra-green transition text-gray-500 hover:text-gray-300">Admin Terminal</Link></li>
               </ul>
             </div>
 
