@@ -39,7 +39,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 concentra-portal
 ├─ AGENTS.md
 ├─ CLAUDE.md
-├─ components.json
 ├─ eslint.config.mjs
 ├─ next.config.ts
 ├─ package-lock.json
@@ -59,82 +58,15 @@ concentra-portal
 │  │  │  ├─ admin
 │  │  │  │  └─ enquiries
 │  │  │  │     └─ page.tsx
-│  │  │  ├─ layout.tsx
-│  │  │  ├─ page.tsx
-│  │  │  └─ request-quote
-│  │  │     ├─ enquiry
-│  │  │     │  └─ page.tsx
-│  │  │     └─ page.tsx
-│  │  ├─ favicon.ico
-│  │  ├─ globals.css
-│  │  └─ hq-command-77x
-│  │     ├─ dashboard
-│  │     │  ├─ analytics
-│  │     │  │  └─ page.tsx
-│  │     │  ├─ content
-│  │     │  │  └─ page.tsx
-│  │     │  ├─ layout.tsx
-│  │     │  ├─ page.tsx
-│  │     │  ├─ rfq
-│  │     │  │  └─ [id]
-│  │     │  │     └─ page.tsx
-│  │     │  └─ users
-│  │     │     └─ page.tsx
-│  │     ├─ layout.tsx
-│  │     └─ page.tsx
-│  ├─ components
-│  │  ├─ home
-│  │  │  ├─ CtaBanner.tsx
-│  │  │  ├─ GlobalReach.tsx
-│  │  │  ├─ HeroSlider.tsx
-│  │  │  ├─ OurExpertise.tsx
-│  │  │  ├─ QualityCertificates.tsx
-│  │  │  └─ TrustedBy.tsx
-│  │  ├─ shared
-│  │  │  ├─ Breadcrumb.tsx
-│  │  │  ├─ CADViewer.tsx
-│  │  │  ├─ Footer.tsx
-│  │  │  ├─ GridOverlay.tsx
-│  │  │  ├─ Navbar.tsx
-│  │  │  └─ NavDropdowns.tsx
-│  │  └─ ui
-│  │     └─ navigation-menu.tsx
-│  ├─ lib
-│  │  └─ utils.ts
-│  └─ proxy.ts
-└─ tsconfig.json
-
-```
-```
-concentra-portal
-├─ AGENTS.md
-├─ CLAUDE.md
-├─ eslint.config.mjs
-├─ next.config.ts
-├─ package-lock.json
-├─ package.json
-├─ postcss.config.mjs
-├─ public
-│  ├─ blueprint-placeholder.png
-│  ├─ file.svg
-│  ├─ globe.svg
-│  ├─ next.svg
-│  ├─ vercel.svg
-│  └─ window.svg
-├─ README.md
-├─ src
-│  ├─ app
-│  │  ├─ (public)
-│  │  │  ├─ admin
-│  │  │  │  └─ enquiries
-│  │  │  │     └─ page.tsx
+│  │  │  ├─ careers
+│  │  │  │  └─ page.tsx
 │  │  │  ├─ company
 │  │  │  │  ├─ about
 │  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ certifications
 │  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ facilities
-│  │  │  │  │  └─ pages.tsx
+│  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ page.tsx
 │  │  │  │  └─ quality
 │  │  │  │     └─ page.tsx
@@ -179,6 +111,10 @@ concentra-portal
 │  │  └─ hq-command-77x
 │  │     ├─ dashboard
 │  │     │  ├─ analytics
+│  │     │  │  └─ page.tsx
+│  │     │  ├─ careers
+│  │     │  │  └─ page.tsx
+│  │     │  ├─ contact
 │  │     │  │  └─ page.tsx
 │  │     │  ├─ content
 │  │     │  │  └─ page.tsx

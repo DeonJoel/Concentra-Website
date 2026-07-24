@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-// 1. Added Briefcase icon here
 import { LayoutDashboard, Users, FileText, LogOut, ShieldAlert, Cpu, Briefcase, MessageSquare } from "lucide-react";
 
 // Define the available routes dynamically
@@ -20,6 +19,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [userRole, setUserRole] = useState("LOADING...");
   const [userName, setUserName] = useState("");
+  
+  // NEW: Strict render guard state
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -29,11 +31,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           const data = await response.json();
           setUserRole(data.role);
           setUserName(data.username);
+          // Only unlock the UI if the token is valid
+          setIsAuthorized(true);
         } else {
-          setUserRole("UNAUTHORIZED");
+          window.location.href = "/hq-command-77x";
         }
       } catch (error) {
-        setUserRole("ERROR");
+        window.location.href = "/hq-command-77x";
       }
     };
     fetchUser();
@@ -46,6 +50,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       window.location.href = "/hq-command-77x";
     }
   };
+
+  // NEW: If they are not authorized yet, show a secure loading screen instead of the dashboard
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 z-50">
+        <div className="text-green-500 font-mono animate-pulse tracking-widest text-sm">
+          VERIFYING SECURE CONNECTION...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-blueprint-bg">
