@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, LogOut, ShieldAlert, Cpu } from "lucide-react";
+// 1. Added Briefcase icon here
+import { LayoutDashboard, Users, FileText, LogOut, ShieldAlert, Cpu, Briefcase } from "lucide-react";
 
 // Define the available routes dynamically
 const NAVIGATION_ROUTES = [
   { name: "Live RFQs", path: "/hq-command-77x/dashboard", icon: LayoutDashboard },
   { name: "Website Content", path: "/hq-command-77x/dashboard/content", icon: FileText },
   { name: "Access Control", path: "/hq-command-77x/dashboard/users", icon: Users },
-  // Adding the new AI Enquiry route
   { name: "AI Analytics", path: "/hq-command-77x/dashboard/analytics", icon: Cpu },
+  // 2. Added the new Job Postings route here
+  { name: "Job Postings", path: "/hq-command-77x/dashboard/careers", icon: Briefcase },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
