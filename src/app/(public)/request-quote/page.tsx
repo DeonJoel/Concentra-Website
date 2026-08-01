@@ -119,7 +119,7 @@ export default function RequestQuote() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-                  <input name="phone" type="tel" className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="+1 (555) 000-0000" />
+                  <input name="phone" type="tel" className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="+91 98765 43210" />
                 </div>
               </div>
 
