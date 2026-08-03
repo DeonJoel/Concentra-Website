@@ -1,27 +1,51 @@
 "use client";
 
-// 1. Define the props interface for the CMS data
-interface QualityCertificatesProps {
-  heading?: string;
-  subHeading?: string;
-  buttonText?: string;
-  mainImage?: string;
-  certificates?: any[]; // The array of certificate logos/text
-}
+import { useEffect, useState } from "react";
 
-export default function QualityCertificates({
-  heading = "Uncompromising Quality",
-  subHeading = "Engineered for Exacting Standards",
-  buttonText = "View Manufacturing Facility",
-  mainImage = "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?q=80&w=2070&auto=format&fit=crop", // Default fallback image
-  certificates = []
-}: QualityCertificatesProps) {
+export default function QualityCertificates() {
+  const [cmsData, setCmsData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Automatically fetch from the backend on load
+  useEffect(() => {
+    async function fetchQualityData() {
+      try {
+        const response = await fetch("http://localhost:8000/api/content/home");
+        if (!response.ok) throw new Error("Failed to fetch CMS data");
+        
+        const data = await response.json();
+        const qualityData = data.filter((item: any) => item.section === "quality_certificates");
+        setCmsData(qualityData);
+      } catch (error) {
+        console.error("Error fetching Quality data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchQualityData();
+  }, []);
+
+  // Helper function to extract text/images safely
+  const getValue = (key: string, fallback: string) => {
+    const block = cmsData.find(c => c.content_key === key);
+    return block?.content_value || fallback;
+  };
+
+  // 1. Get Text & Main Image Data
+  const heading = getValue("quality_heading", "Uncompromising Quality");
+  const subHeading = getValue("quality_subheading", "Engineered for Exacting Standards");
+  const buttonText = getValue("quality_button", "View Manufacturing Facility");
   
-  // 2. Safety fallback just in case the CMS is empty
-  const displayCertificates = certificates && certificates.length > 0 ? certificates : [
-    { id: 'mock1', content_type: 'text', content_value: "UKAS Management" },
-    { id: 'mock2', content_type: 'text', content_value: "ANAB Accredited" },
-    { id: 'mock3', content_type: 'text', content_value: "Perry Johnson" },
+  // Defaulting to a high-precision CNC / CMM Machine image
+  const mainImage = getValue("quality_main_image", "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=2070&auto=format&fit=crop"); 
+
+  // 2. Extract only the certificates from the CMS data
+  const fetchedCertificates = cmsData.filter(c => c.content_key.startsWith("cert_logo_"));
+
+  // Safety fallback just in case the CMS is entirely empty
+  const displayCertificates = fetchedCertificates.length > 0 ? fetchedCertificates : [
+    { id: 'mock1', content_type: 'image', content_value: "https://raw.githubusercontent.com/DeonJoel/company-assets/5822f8874ad7fbf2620f7f085992de1789272b54/Quality_Certificate.png" }
   ];
 
   // Helper to format the image URL for the main background
@@ -29,6 +53,9 @@ export default function QualityCertificates({
     if (!url) return '';
     return url.startsWith('http') ? url : `http://localhost:8000/${url}`;
   };
+
+  // Check if we only have one certificate to adjust sizing dynamically
+  const isSingleCert = displayCertificates.length === 1;
 
   return (
     <section className="w-full py-16 relative z-30">
@@ -61,7 +88,12 @@ export default function QualityCertificates({
               {displayCertificates.map((cert) => (
                 <div 
                   key={cert.id} 
-                  className="w-20 h-24 md:w-24 md:h-28 bg-gray-50 border border-gray-200 rounded flex flex-col items-center justify-center p-2 shadow-sm transition hover:shadow-md overflow-hidden"
+                  // If single, make it larger (w-32/h-40). If multiple, keep original size.
+                  className={`${
+                    isSingleCert 
+                      ? "w-32 h-40 md:w-40 md:h-48" 
+                      : "w-20 h-24 md:w-24 md:h-28"
+                  } bg-gray-50 border border-gray-200 rounded flex flex-col items-center justify-center p-2 shadow-sm transition hover:shadow-md overflow-hidden`}
                 >
                   {/* DYNAMIC RENDER: Image vs Text */}
                   {cert.content_type === "image" ? (

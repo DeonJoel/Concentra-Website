@@ -1,14 +1,24 @@
 "use client";
 
+import Link from "next/link";
+
 // 1. Define the props interface
 interface CtaBannerProps {
-  heading: string;
-  button1Text: string;
-  button2Text: string;
+  heading?: string;
+  button1Text?: string;
+  button1Link?: string;
+  button2Text?: string;
+  button2Link?: string;
 }
 
-// 2. Pass the props into the component
-export default function CtaBanner({ heading, button1Text, button2Text }: CtaBannerProps) {
+// 2. Pass the props into the component with fallback values
+export default function CtaBanner({ 
+  heading = "Ready to elevate your manufacturing capabilities?", 
+  button1Text = "Request a Quote", 
+  button1Link = "/request-quote",
+  button2Text = "Contact Us",
+  button2Link = "/contact-us"
+}: CtaBannerProps) {
   return (
     <section className="w-full py-16 relative z-30 mb-10">
       <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
@@ -22,13 +32,20 @@ export default function CtaBanner({ heading, button1Text, button2Text }: CtaBann
           </div>
 
           <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-end shrink-0">
-            {/* 4. Inject dynamic button text */}
-            <button className="bg-white text-concentra-green hover:bg-gray-100 font-bold py-4 px-8 md:py-3 md:px-8 rounded-xl transition duration-300 w-full sm:w-auto shadow-md text-lg md:text-base">
+            {/* 4. Inject dynamic button text and Next.js links */}
+            <Link 
+              href={button1Link}
+              className="bg-white text-concentra-green hover:bg-gray-100 font-bold py-4 px-8 md:py-3 md:px-8 rounded-xl transition duration-300 w-full sm:w-auto shadow-md text-lg md:text-base flex items-center justify-center text-center"
+            >
               {button1Text}
-            </button>
-            <button className="bg-transparent hover:bg-white/10 border-2 border-white text-white font-bold py-4 px-8 md:py-3 md:px-8 rounded-xl transition duration-300 w-full sm:w-auto text-lg md:text-base">
+            </Link>
+            
+            <Link 
+              href={button2Link}
+              className="bg-transparent hover:bg-white/10 border-2 border-white text-white font-bold py-4 px-8 md:py-3 md:px-8 rounded-xl transition duration-300 w-full sm:w-auto text-lg md:text-base flex items-center justify-center text-center"
+            >
               {button2Text}
-            </button>
+            </Link>
           </div>
 
         </div>

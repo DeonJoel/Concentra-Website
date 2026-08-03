@@ -1,20 +1,47 @@
 "use client";
 
-// 1. Define the props interface
-interface GlobalReachProps {
-  heading?: string;
-  subHeading?: string;
-  description?: string;
-  mapImage?: string;
-}
+import { useEffect, useState } from "react";
 
-// 2. Pass the props into the component with safety fallbacks
-export default function GlobalReach({
-  heading = "Global Reach",
-  subHeading = "Delivering Precision to Assembly Lines Worldwide",
-  description = "We proudly export our precision-engineered components to industry leaders worldwide.\n\nBacked by a robust global logistics network, we are fully equipped and eager to serve as a reliable supplier for assembly lines in any part of the world.",
-  mapImage
-}: GlobalReachProps) {
+export default function GlobalReach() {
+  const [cmsData, setCmsData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Automatically fetch from the backend on load
+  useEffect(() => {
+    async function fetchReachData() {
+      try {
+        const response = await fetch("http://localhost:8000/api/content/home");
+        if (!response.ok) throw new Error("Failed to fetch CMS data");
+        
+        const data = await response.json();
+        const reachData = data.filter((item: any) => item.section === "global_reach");
+        setCmsData(reachData);
+      } catch (error) {
+        console.error("Error fetching Global Reach data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchReachData();
+  }, []);
+
+  // Helper function to extract text/images safely
+  const getValue = (key: string, fallback: string) => {
+    const block = cmsData.find(c => c.content_key === key);
+    return block?.content_value || fallback;
+  };
+
+  const heading = getValue("reach_heading", "Global Reach");
+  const subHeading = getValue("reach_subheading", "Delivering Precision to Assembly Lines Worldwide");
+  const description = getValue(
+    "reach_description", 
+    "We proudly export our precision-engineered components to industry leaders worldwide.\n\nBacked by a robust global logistics network, we are fully equipped and eager to serve as a reliable supplier for assembly lines in any part of the world."
+  );
+  
+  // The mapImage will grab the URL from the database
+  const mapImage = getValue("map_image", "");
+
   return (
     <section className="w-full py-16 relative z-30">
       

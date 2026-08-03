@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import Link from "next/link";
@@ -7,179 +8,178 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
+// Interface for our dynamically grouped slides
+interface SlideData {
+  id: number;
+  image: string;
+  subtitle: string;
+  title: string;
+  description: string;
+  btn1_text: string;
+  btn1_link: string;
+  btn2_text: string;
+  btn2_link: string;
+}
+
 export default function HeroSlider() {
+  const [slides, setSlides] = useState<SlideData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   // Shared gradient style to prevent the "crease" on dark images
-  // Smoothly transitions all the way to 100% to eliminate hard stops
   const smoothGradient = {
     backgroundImage: "linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,0) 100%)"
   };
 
-  return (
-    // Changed to h-screen to fill the entire viewport on load
-    <div className="relative w-full h-screen min-h-[600px]">
-      <Swiper
-        modules={[Autoplay, Pagination, EffectFade]}
-        effect="fade"
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 6000, disableOnInteraction: false }}
-        loop={true}
-        className="w-full h-full"
-      >
-        {/* SLIDE 1: Factory / Shop Floor */}
-        <SwiperSlide>
-          <div className="relative w-full h-full flex items-center">
-            {/* Wide Factory Image */}
-            <div 
-              className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop')" }}
-            ></div>
+  useEffect(() => {
+    async function fetchSliderData() {
+      try {
+        const response = await fetch("http://localhost:8000/api/content/home");
+        if (!response.ok) throw new Error("Failed to fetch CMS data");
+        
+        const data = await response.json();
+        
+        // Isolate only the hero slider data
+        const sliderData = data.filter((item: any) => item.section === "hero_slider");
+        
+        // Group the flat keys (slide_1_title, slide_1_image) into distinct slide objects
+        const groupedSlides: Record<number, any> = {};
+        
+        sliderData.forEach((item: any) => {
+          // Extract the number and the property name using regex (e.g., "slide_1_title" -> "1", "title")
+          const match = item.content_key.match(/^slide_(\d+)_(.+)$/);
+          if (match) {
+            const slideId = parseInt(match[1], 10);
+            const prop = match[2];
             
-            {/* Smoothed Gradient Overlay */}
-            <div 
-              className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
-              style={smoothGradient}
-            ></div>
+            if (!groupedSlides[slideId]) {
+              groupedSlides[slideId] = { id: slideId };
+            }
+            groupedSlides[slideId][prop] = item.content_value;
+          }
+        });
 
-            {/* Content Grid */}
-            <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
-              <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full">
-                <div>
-                  <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
-                    Precision Engineering & Manufacturing
-                  </p>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
-                    Next-Generation Spindle Technology.
-                  </h1>
-                  <p className="text-base md:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl">
-                    Delivering uncompromising quality, rapid re-manufacturing, and reliable engineering solutions to keep your production lines moving.
-                  </p>
+        // Convert the grouped object back to an array and sort by ID so slide 1 comes before slide 2
+        const slidesArray = Object.values(groupedSlides).sort((a: any, b: any) => a.id - b.id);
+        setSlides(slidesArray);
+        
+      } catch (error) {
+        console.error("Error fetching Hero Slider data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchSliderData();
+  }, []);
+
+  // Helper to format image paths
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    return url.startsWith('http') ? url : `http://localhost:8000/${url}`;
+  };
+
+  return (
+    <div className="relative w-full h-screen min-h-[600px]">
+      
+      {isLoading ? (
+        // Simple loading state to prevent flash of unstyled content
+        <div className="w-full h-full bg-stone-100 animate-pulse flex items-center justify-center">
+          <span className="text-industrial-slate font-medium">Loading Experience...</span>
+        </div>
+      ) : (
+        <Swiper
+          modules={[Autoplay, Pagination, EffectFade]}
+          effect="fade"
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 6000, disableOnInteraction: false }}
+          loop={slides.length > 1} // Only loop if there is more than 1 slide
+          className="w-full h-full"
+        >
+          
+          {slides.length > 0 ? (
+            // DYNAMIC RENDERING: Map through CMS slides
+            slides.map((slide) => (
+              <SwiperSlide key={slide.id}>
+                <div className="relative w-full h-full flex items-center">
                   
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Link 
-                      href="/company/facilities"
-                      className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
-                    >
-                      View Manufacturing Facilities
-                    </Link>
-                    <Link 
-                      href="/request-quote"
-                      className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit text-sm flex items-center justify-center"
-                    >
-                      Request a Quote
-                    </Link>
+                  {/* Wide Background Image */}
+                  <div 
+                    className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
+                    style={{ backgroundImage: `url('${getImageUrl(slide.image)}')` }}
+                  ></div>
+                  
+                  {/* Smoothed Gradient Overlay */}
+                  <div 
+                    className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
+                    style={smoothGradient}
+                  ></div>
+
+                  {/* Content Grid (Confined to cols 2-6) */}
+                  <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
+                    <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full">
+                      
+                      <div>
+                        {slide.subtitle && (
+                          <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
+                            {slide.subtitle}
+                          </p>
+                        )}
+                        
+                        {slide.title && (
+                          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
+                            {slide.title}
+                          </h1>
+                        )}
+                        
+                        {slide.description && (
+                          <p className="text-base md:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl whitespace-pre-wrap">
+                            {slide.description}
+                          </p>
+                        )}
+                        
+                        {/* DYNAMIC BUTTON LOGIC: Adjusts layout based on how many buttons exist */}
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          
+                          {/* Button 1 (Solid Green Style) */}
+                          {slide.btn1_text && slide.btn1_link && (
+                            <Link 
+                              href={slide.btn1_link}
+                              className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
+                            >
+                              {slide.btn1_text}
+                            </Link>
+                          )}
+                          
+                          {/* Button 2 (Transparent Outline Style) */}
+                          {slide.btn2_text && slide.btn2_link && (
+                            <Link 
+                              href={slide.btn2_link}
+                              className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit text-sm flex items-center justify-center"
+                            >
+                              {slide.btn2_text}
+                            </Link>
+                          )}
+                          
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
+              </SwiperSlide>
+            ))
+          ) : (
+            // FALLBACK: In case CMS is totally empty, show a blank placeholder slide
+            <SwiperSlide>
+              <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100">
+                <h1 className="text-2xl text-gray-500 font-bold mb-2">No Slides Found</h1>
+                <p className="text-gray-400">Add slides with section key "hero_slider" in CMS.</p>
               </div>
-            </div>
-          </div>
-        </SwiperSlide>
+            </SwiperSlide>
+          )}
 
-        {/* SLIDE 2: Product Focus (Tool Clamping) */}
-        <SwiperSlide>
-          <div className="relative w-full h-full flex items-center">
-            <div 
-              className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop')" }}
-            ></div>
-            
-            <div 
-              className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
-              style={smoothGradient}
-            ></div>
-
-            <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
-              <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full">
-                <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
-                  Uncompromising Quality
-                </p>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
-                  Engineered for Exacting Standards.
-                </h1>
-                <p className="text-base md:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl">
-                  Explore our comprehensive range of HSK Tool Clamping Sets and precision machinery components built for ultimate durability.
-                </p>
-                <Link 
-                  href="/products/tool-holding"
-                  className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
-                >
-                  Explore Tool Holding
-                </Link>
-              </div>
-            </div>
-          </div>
-        </SwiperSlide>
-
-        {/* SLIDE 3: Spindle Remanufacturing */}
-        <SwiperSlide>
-          <div className="relative w-full h-full flex items-center">
-            <div 
-              className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop')" }}
-            ></div>
-            
-            <div 
-              className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
-              style={smoothGradient}
-            ></div>
-
-            <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
-              <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full">
-                <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
-                  Service & Restoration
-                </p>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
-                  Expert Spindle Remanufacturing.
-                </h1>
-                <p className="text-base md:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl">
-                  Restore your critical equipment to OEM specifications with our specialized diagnostics, balancing, and rebuilding services.
-                </p>
-                <Link 
-                  href="/products/spindles"
-                  className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
-                >
-                  View Spindle Services
-                </Link>
-              </div>
-            </div>
-          </div>
-        </SwiperSlide>
-
-        {/* SLIDE 4: Machining Services */}
-        <SwiperSlide>
-          <div className="relative w-full h-full flex items-center">
-            <div 
-              className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=2070&auto=format&fit=crop')" }}
-            ></div>
-            
-            <div 
-              className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
-              style={smoothGradient}
-            ></div>
-
-            <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
-              <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full">
-                <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
-                  Advanced Capabilities
-                </p>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
-                  Comprehensive CNC Machining.
-                </h1>
-                <p className="text-base md:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl">
-                  From high-volume horizontal turning to complex multi-axis milling, we deliver precision components on time, every time.
-                </p>
-                <Link 
-                  href="/services"
-                  className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
-                >
-                  Explore Machining Capabilities
-                </Link>
-              </div>
-            </div>
-          </div>
-        </SwiperSlide>
-
-      </Swiper>
+        </Swiper>
+      )}
     </div>
   );
 }

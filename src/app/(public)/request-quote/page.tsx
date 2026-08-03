@@ -82,6 +82,10 @@ export default function RequestQuote() {
 
         setIsSubmitted(true);
         setSelectedFile(null); // Clear the file state on successful upload
+        
+        // NEW: Smoothly scroll back to the top of the page so the user sees the success message
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        
     } catch (error) {
         console.error("Submission error:", error);
         alert("There was an error securely submitting your form. Please try again.");
@@ -89,7 +93,8 @@ export default function RequestQuote() {
   };
 
   return (
-    <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 relative ">
+    // UPDATED HERE: Changed py-16 to pt-32 pb-16 to clear the fixed navbar
+    <div className="min-h-screen pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-slate-900 mb-4">Request a Quote</h1>

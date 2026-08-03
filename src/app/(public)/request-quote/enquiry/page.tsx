@@ -74,7 +74,8 @@ export default function EnquiryPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    // UPDATED HERE: Changed py-12 to pt-32 pb-12 to clear the fixed navbar
+    <div className="min-h-screen bg-slate-50 pt-32 pb-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-extrabold text-slate-900">Instant Manufacturing Analysis</h1>

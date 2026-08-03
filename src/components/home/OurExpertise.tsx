@@ -1,32 +1,53 @@
 "use client";
 
-// 1. Define the props interface for the CMS data
-interface OurExpertiseProps {
-  heading?: string;
-  subHeading?: string;
-  contentBlocks?: any[]; // We will pass the whole array of expertise blocks here
-}
+import { useEffect, useState } from "react";
 
-export default function OurExpertise({ 
-  heading = "Our Expertise", 
-  subHeading = "Precision Manufacturing & Re-manufacturing", 
-  contentBlocks = [] 
-}: OurExpertiseProps) {
+export default function OurExpertise() {
+  const [cmsData, setCmsData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Automatically fetch from the backend on load
+  useEffect(() => {
+    async function fetchExpertiseData() {
+      try {
+        const response = await fetch("http://localhost:8000/api/content/home");
+        if (!response.ok) throw new Error("Failed to fetch CMS data");
+        
+        const data = await response.json();
+        
+        // Filter ONLY the items designated for the 'our_expertise' section
+        const expertiseData = data.filter((item: any) => item.section === "our_expertise");
+        
+        setCmsData(expertiseData);
+      } catch (error) {
+        console.error("Error fetching Expertise data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchExpertiseData();
+  }, []);
+
+  // Helper function to extract text/images safely from the CMS array
+  const getValue = (key: string, fallback: string) => {
+    const block = cmsData.find(c => c.content_key === key);
+    return block?.content_value || fallback;
+  };
+
+  // 1. Get Top Headings
+  const heading = getValue("expertise_heading", "Our Expertise");
+  const subHeading = getValue("expertise_subheading", "Precision Manufacturing & Re-manufacturing");
 
   // 2. Helper function to extract specific card data from the CMS array
   const getCardData = (num: number) => {
-    const titleBlock = contentBlocks.find(c => c.content_key === `card_${num}_title`);
-    const descBlock = contentBlocks.find(c => c.content_key === `card_${num}_desc`);
-    const imgBlock = contentBlocks.find(c => c.content_key === `card_${num}_image`);
-    
-    // Default fallback text if the CMS blocks haven't been created yet
     const defaultTitles = ["Spindle Remanufacturing", "Component Manufacturing", "HSK Tool Clamping Sets"];
     
     return {
       id: num,
-      title: titleBlock?.content_value || defaultTitles[num - 1],
-      description: descBlock?.content_value || "Placeholder description coming from CMS. Add a text block for this card.",
-      image: imgBlock?.content_value || null
+      title: getValue(`card_${num}_title`, defaultTitles[num - 1]),
+      description: getValue(`card_${num}_desc`, "Placeholder description coming from CMS. Add a text block for this card."),
+      image: getValue(`card_${num}_image`, "")
     };
   };
 
