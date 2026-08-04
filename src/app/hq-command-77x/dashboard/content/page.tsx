@@ -1,424 +1,480 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { 
-  Plus, Edit, Trash2, LayoutTemplate, 
-  Type, Image as ImageIcon, Save, X, Loader2, ListPlus
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Edit2, Save, Image as ImageIcon, Type, Loader2, Plus, Trash2 } from "lucide-react";
 
-export default function CMSPage() {
-  const [activePage, setActivePage] = useState("home");
-  const [contentItems, setContentItems] = useState<any[]>([]);
+// --- TYPES ---
+interface CMSItem {
+  id: number;
+  page: string;
+  section: string;
+  content_type: string;
+  content_key: string;
+  content_value: string;
+}
+
+// State for bulk-editing a group
+interface EditGroupState {
+  [itemId: number]: {
+    type: string;
+    value: string;
+    file: File | null;
+  };
+}
+
+export default function HomeCMSDashboard() {
+  const [data, setData] = useState<CMSItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Edit State
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editValue, setEditValue] = useState("");
-  const [editFile, setEditFile] = useState<File | null>(null);
+  // Tracks which ENTIRE group (card/slide) is being edited
+  const [editingGroupKey, setEditingGroupKey] = useState<string | null>(null);
+  
+  // Holds the temporary edits for all items in the active group
+  const [editState, setEditState] = useState<EditGroupState>({});
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Add Modal State
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newBlock, setNewBlock] = useState<{
-    section: string; type: string; key: string; value: string; file: File | null;
-  }>({ section: "hero", type: "text", key: "", value: "", file: null });
+  const fetchContent = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("http://localhost:8000/api/content/home");
+      if (!res.ok) throw new Error("Failed to fetch CMS data");
+      const json = await res.json();
+      setData(json);
+    } catch (error) {
+      console.error("Error loading CMS:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // 1. FETCH DATA
   useEffect(() => {
-    const fetchContent = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`http://localhost:8000/api/content/${activePage}`);
-        if (response.ok) {
-          const data = await response.json();
-          setContentItems(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch content", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchContent();
-  }, [activePage]);
+  }, []);
 
-  // Group Data by Section
-  const groupedContent = contentItems.reduce((acc, item) => {
-    if (!acc[item.section]) acc[item.section] = [];
-    acc[item.section].push(item);
-    return acc;
-  }, {});
-
-  // 2. SAVE EDITS (Text or Image)
-  const handleSaveEdit = async (item: any) => {
-    const formData = new FormData();
-    if (item.content_type === "text") {
-      formData.append("content_value", editValue);
-    } else if (item.content_type === "image" && editFile) {
-      formData.append("file", editFile);
-    } else {
-      setEditingId(null);
-      return; // No file selected, cancel out
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8000/api/admin/content/${item.id}`, {
-        method: "PUT",
-        body: formData,
-        credentials: "include"
-      });
-      if (response.ok) {
-        // Refresh the page data to get the new file path from Python
-        const res = await fetch(`http://localhost:8000/api/content/${activePage}`);
-        setContentItems(await res.json());
-        setEditingId(null);
-        setEditFile(null);
-      }
-    } catch (error) {
-      console.error("Failed to update", error);
-    }
-  };
-
-  // 3. CREATE NEW BLOCK (Text or Image)
-  const handleAddNew = async () => {
-    if (!newBlock.key) return alert("Key name is required!");
-    if (newBlock.type === "text" && !newBlock.value) return alert("Text value is required!");
-    if (newBlock.type === "image" && !newBlock.file) return alert("Please select an image file!");
-
-    const formData = new FormData();
-    formData.append("page", activePage);
-    formData.append("section", newBlock.section);
-    formData.append("content_type", newBlock.type);
-    formData.append("content_key", newBlock.key);
+  // --- START BULK EDITING A GROUP ---
+  const startEditingGroup = (sectionName: string, groupName: string, items: CMSItem[]) => {
+    const key = `${sectionName}-${groupName}`;
+    setEditingGroupKey(key);
     
-    if (newBlock.type === "image" && newBlock.file) {
-      formData.append("file", newBlock.file);
-    } else {
-      formData.append("content_value", newBlock.value);
-    }
+    // Populate the temporary state with all fields in this group
+    const initialState: EditGroupState = {};
+    items.forEach(item => {
+      initialState[item.id] = {
+        type: item.content_type,
+        value: item.content_value,
+        file: null
+      };
+    });
+    setEditState(initialState);
+  };
 
-    try {
-      const response = await fetch(`http://localhost:8000/api/admin/content`, {
-        method: "POST",
-        body: formData,
-        credentials: "include"
-      });
-      if (response.ok) {
-        // Refresh the page data
-        const res = await fetch(`http://localhost:8000/api/content/${activePage}`);
-        setContentItems(await res.json());
-        setShowAddModal(false);
-        setNewBlock({ section: "hero", type: "text", key: "", value: "", file: null }); // Reset
+  // Helper to update a specific field inside the bulk editor
+  const updateEditState = (id: number, field: 'type' | 'value' | 'file', val: any) => {
+    setEditState(prev => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: val
       }
+    }));
+  };
+
+  // --- SMART BULK SAVE HANDLER ---
+  const handleSaveGroup = async (items: CMSItem[]) => {
+    setIsSaving(true);
+    
+    try {
+      // Loop through all items in the group and process their updates concurrently
+      const promises = items.map(async (item) => {
+        const current = editState[item.id];
+        if (!current) return;
+
+        // 🚀 SCENARIO 1: They swapped the type (e.g. Text -> Image)
+        if (current.type !== item.content_type) {
+          // Delete old block
+          await fetch(`http://localhost:8000/api/admin/content/${item.id}`, { 
+            method: "DELETE", credentials: "include" 
+          });
+
+          // Recreate with new type
+          const formData = new FormData();
+          formData.append("page", item.page);
+          formData.append("section", item.section);
+          formData.append("content_type", current.type);
+          formData.append("content_key", item.content_key);
+          
+          if (current.type === "image" && current.file) {
+            formData.append("file", current.file);
+          } else if (current.type === "text") {
+            formData.append("content_value", current.value || "Placeholder");
+          }
+          
+          await fetch("http://localhost:8000/api/admin/content", { 
+            method: "POST", body: formData, credentials: "include" 
+          });
+        } 
+        
+        // 🚀 SCENARIO 2: Standard Update (Type did not change)
+        else {
+          let hasChanges = false;
+          const formData = new FormData();
+
+          if (current.type === "image" && current.file) {
+            formData.append("file", current.file);
+            hasChanges = true;
+          } else if (current.type === "text" && current.value !== item.content_value) {
+            formData.append("content_value", current.value);
+            hasChanges = true;
+          }
+
+          // Only hit the API if they actually changed the text or uploaded a new file
+          if (hasChanges) {
+            await fetch(`http://localhost:8000/api/admin/content/${item.id}`, { 
+              method: "PUT", body: formData, credentials: "include" 
+            });
+          }
+        }
+      });
+
+      // Wait for all fields in the card to save before reloading
+      await Promise.all(promises);
+      await fetchContent();
+      setEditingGroupKey(null);
+
     } catch (error) {
-      console.error("Failed to create", error);
+      console.error("Save error:", error);
+      alert("Error saving content.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  // 4. QUICK ADD LOGO/CERT (Text fallback)
-  const handleQuickAdd = async (section: string, type: string, keyPrefix: string) => {
-    const existingCount = contentItems.filter(i => i.section === section && i.content_key.startsWith(keyPrefix)).length;
-    const newKey = `${keyPrefix}_${existingCount + 1}`;
+  // --- DELETE ENTIRE GROUP LOGIC ---
+  const handleDeleteGroup = async (items: CMSItem[], groupName: string) => {
+    if (!confirm(`Are you sure you want to permanently delete ${groupName}?`)) return;
+    setIsLoading(true);
     
-    // Open the modal pre-filled so they can upload the logo immediately!
-    setNewBlock({ section, type: "image", key: newKey, value: "", file: null });
-    setShowAddModal(true);
+    try {
+      // Delete all fields belonging to this slide/partner concurrently
+      const promises = items.map(item => 
+        fetch(`http://localhost:8000/api/admin/content/${item.id}`, { method: "DELETE", credentials: "include" })
+      );
+      
+      await Promise.all(promises);
+      await fetchContent();
+    } catch (e) {
+      console.error(e);
+      alert("Failed to delete group.");
+      setIsLoading(false);
+    }
   };
 
+  // Single field delete (Fallback for General Settings cleanup)
+  const handleDeleteSingleField = async (id: number) => {
+    if (!confirm("Delete this individual field?")) return;
+    setIsLoading(true);
+    try {
+      await fetch(`http://localhost:8000/api/admin/content/${id}`, { method: "DELETE", credentials: "include" });
+      await fetchContent();
+    } catch (e) {
+      console.error(e);
+      alert("Failed to delete.");
+      setIsLoading(false);
+    }
+  };
 
-  // Add a full Slide (3 blocks at once)
+  // --- ADD NEW SLIDE/PARTNER LOGIC (Unchanged) ---
   const handleAddSlide = async () => {
-    // Determine the next slide number
-    const existingSlides = contentItems.filter(i => i.section === "hero" && i.content_key.includes("_heading")).length;
-    const nextNum = existingSlides + 1;
+    setIsLoading(true);
+    const sliderItems = data.filter(i => i.section === 'hero_slider');
+    const maxSlide = sliderItems.reduce((max, item) => {
+      const match = item.content_key.match(/slide_(\d+)/);
+      return match ? Math.max(max, parseInt(match[1])) : max;
+    }, 0);
+    const nextId = maxSlide + 1;
 
-    const newBlocks = [
-      { type: "text", key: `slide_${nextNum}_heading`, val: `Slide ${nextNum} Heading` },
-      { type: "text", key: `slide_${nextNum}_subheading`, val: `Slide ${nextNum} Description` },
-      { type: "image", key: `slide_${nextNum}_image`, val: "" } // Leave empty so you can upload a file later
+    const newSlideFields = [
+      { key: `slide_${nextId}_image`, type: 'text', val: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070' }, 
+      { key: `slide_${nextId}_subtitle`, type: 'text', val: 'New Subtitle' },
+      { key: `slide_${nextId}_title`, type: 'text', val: `Slide ${nextId} Title` },
+      { key: `slide_${nextId}_description`, type: 'text', val: 'Description goes here.' },
+      { key: `slide_${nextId}_btn1_text`, type: 'text', val: 'Learn More' },
+      { key: `slide_${nextId}_btn1_link`, type: 'text', val: '#' }
     ];
 
-    // Create all 3 blocks in the database
-    for (const block of newBlocks) {
+    for (const field of newSlideFields) {
       const formData = new FormData();
-      formData.append("page", activePage);
-      formData.append("section", "hero");
-      formData.append("content_type", block.type);
-      formData.append("content_key", block.key);
-      formData.append("content_value", block.val);
-
-      await fetch(`http://localhost:8000/api/admin/content`, {
-        method: "POST",
-        body: formData,
-        credentials: "include"
-      });
+      formData.append("page", "home");
+      formData.append("section", "hero_slider");
+      formData.append("content_type", field.type);
+      formData.append("content_key", field.key);
+      formData.append("content_value", field.val);
+      await fetch("http://localhost:8000/api/admin/content", { method: "POST", body: formData, credentials: "include" });
     }
+    await fetchContent();
+  };
+
+  const handleAddPartner = async () => {
+    setIsLoading(true);
+    const partnerItems = data.filter(i => i.section === 'trusted_by');
+    const maxPartner = partnerItems.reduce((max, item) => {
+      const match = item.content_key.match(/trusted_logo_(\d+)/);
+      return match ? Math.max(max, parseInt(match[1])) : max;
+    }, 0);
+    const nextId = maxPartner + 1;
+
+    const formData = new FormData();
+    formData.append("page", "home");
+    formData.append("section", "trusted_by");
+    formData.append("content_type", "text");
+    formData.append("content_key", `trusted_logo_${nextId}`);
+    formData.append("content_value", "New Partner");
     
-    // Refresh the page to show the new blocks
-    window.location.reload(); 
+    await fetch("http://localhost:8000/api/admin/content", { method: "POST", body: formData, credentials: "include" });
+    await fetchContent();
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this block?")) return;
-    try {
-      const response = await fetch(`http://localhost:8000/api/admin/content/${id}`, { method: "DELETE", credentials: "include" });
-      if (response.ok) setContentItems(items => items.filter(item => item.id !== id));
-    } catch (error) {
-      console.error("Failed to delete", error);
-    }
+  // --- DATA ORGANIZATION ---
+  const organizeContent = (items: CMSItem[]) => {
+    const sections: Record<string, Record<string, CMSItem[]>> = {};
+
+    items.forEach((item) => {
+      if (!sections[item.section]) sections[item.section] = {};
+
+      let groupName = "General Settings";
+
+      if (item.content_key.includes("slide_")) {
+        const match = item.content_key.match(/slide_(\d+)/);
+        if (match) groupName = `Slide ${match[1]}`;
+      } else if (item.content_key.includes("card_")) {
+        const match = item.content_key.match(/card_(\d+)/);
+        if (match) groupName = `Card ${match[1]}`;
+      } else if (item.content_key.includes("trusted_logo_")) {
+        const match = item.content_key.match(/trusted_logo_(\d+)/);
+        if (match) groupName = `Partner Logo ${match[1]}`;
+      } else if (item.content_key.includes("cert_logo_")) {
+        const match = item.content_key.match(/cert_logo_(\d+)/);
+        if (match) groupName = `Certificate Logo ${match[1]}`;
+      }
+
+      if (!sections[item.section][groupName]) {
+        sections[item.section][groupName] = [];
+      }
+      sections[item.section][groupName].push(item);
+    });
+
+    return sections;
   };
 
-  const startEdit = (item: any) => {
-    setEditingId(item.id);
-    setEditValue(item.content_value);
-    setEditFile(null);
-  };
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <Loader2 className="w-8 h-8 animate-spin text-concentra-purple" />
+      </div>
+    );
+  }
 
-  const formatSectionName = (name: string) => name.replace(/_/g, ' ').toUpperCase();
+  const groupedData = organizeContent(data);
+  const formatTitle = (str: string) => str.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+  // 🚀 CUSTOM SECTION ORDERING ARRAY
+  const sectionOrder = [
+    "hero_slider",
+    "trusted_by",
+    "our_expertise",
+    "quality_certificates",
+    "global_reach"
+  ];
+
+  // Map the groups according to the requested order, appending any unlisted ones at the end
+  const orderedSections = sectionOrder.filter(sec => groupedData[sec]);
+  Object.keys(groupedData).forEach(sec => {
+    if (!orderedSections.includes(sec)) orderedSections.push(sec);
+  });
 
   return (
-    <div className="max-w-7xl mx-auto h-[calc(100vh-8rem)] flex flex-col relative">
+    <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-12">
       
-      {/* HEADER */}
-      <div className="flex justify-between items-end mb-8 shrink-0">
-        <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 mb-2">Website Content Manager</h1>
-          <p className="text-slate-600">Manage your website blocks by section.</p>
-        </div>
-        <button 
-          onClick={() => { setNewBlock({...newBlock, section: Object.keys(groupedContent)[0] || "hero"}); setShowAddModal(true); }}
-          className="flex items-center gap-2 bg-concentra-purple text-white hover:bg-purple-900 px-4 py-2.5 rounded-lg text-sm font-bold shadow-md transition-all active:scale-95"
-        >
-          <Plus className="w-4 h-4" /> Add Custom Block
-        </button>
+      <div className="mb-8 border-b pb-6">
+        <h1 className="text-3xl font-extrabold text-industrial-slate">Home Page CMS</h1>
+        <p className="text-slate-500 mt-2">Manage text, images, and links for the public B2B portal.</p>
       </div>
 
-      {/* SPLIT LAYOUT */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-8 min-h-0">
-        
-        {/* LEFT: Page Navigation */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-          <div className="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 uppercase tracking-wider text-xs">
-            Website Pages
-          </div>
-          <div className="p-2 space-y-1 overflow-y-auto">
-            {["home", "services", "about", "contact"].map((page) => (
-              <button
-                key={page}
-                onClick={() => setActivePage(page)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all capitalize ${
-                  activePage === page 
-                    ? "bg-concentra-purple/10 text-concentra-purple" 
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                <LayoutTemplate className="w-4 h-4" /> {page} Page
-              </button>
-            ))}
-          </div>
-        </div>
+      {orderedSections.map((sectionName) => {
+        const groups = groupedData[sectionName];
 
-        {/* RIGHT: Section-Grouped Editor List */}
-        <div className="lg:col-span-3 bg-slate-50 rounded-xl shadow-inner border border-slate-200 overflow-hidden flex flex-col">
-          <div className="p-4 bg-white border-b border-slate-200 font-bold text-slate-700 uppercase tracking-wider text-xs flex justify-between">
-            <span>{activePage} Page Layout Builder</span>
-            {!isLoading && <span className="text-slate-400 font-medium">{contentItems.length} active blocks</span>}
-          </div>
-          
-          <div className="flex-1 overflow-y-auto p-6 space-y-8 relative">
-            {isLoading ? (
-              <div className="flex flex-col items-center justify-center h-full text-slate-400">
-                <Loader2 className="w-8 h-8 animate-spin mb-2 text-concentra-purple" />
-                <p>Loading database...</p>
-              </div>
-            ) : contentItems.length === 0 ? (
-              <div className="text-center text-slate-400 py-12">No content blocks found.</div>
-            ) : (
-              Object.keys(groupedContent).map((sectionKey) => (
-                <div key={sectionKey} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                  
-                  {/* Section Header */}
-                  <div className="bg-slate-800 p-4 flex justify-between items-center">
-                    <h3 className="font-bold text-white tracking-widest text-sm">
-                      SECTION: {formatSectionName(sectionKey)}
-                    </h3>
+        return (
+          <div key={sectionName} className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+            
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 border-b border-slate-200 pb-4 gap-4">
+              <h2 className="text-2xl font-bold text-concentra-purple uppercase tracking-wider flex items-center m-0">
+                <span className="bg-concentra-purple w-2 h-6 mr-3 rounded-full inline-block"></span>
+                {formatTitle(sectionName)}
+              </h2>
+              
+              {/* DYNAMIC ACTION BUTTONS */}
+              {sectionName === "hero_slider" && (
+                <button onClick={handleAddSlide} className="flex items-center gap-2 bg-concentra-green hover:bg-green-600 text-white text-sm font-bold py-2 px-4 rounded transition shadow-sm">
+                  <Plus className="w-4 h-4"/> Add New Slide
+                </button>
+              )}
+              {sectionName === "trusted_by" && (
+                <button onClick={handleAddPartner} className="flex items-center gap-2 bg-concentra-green hover:bg-green-600 text-white text-sm font-bold py-2 px-4 rounded transition shadow-sm">
+                  <Plus className="w-4 h-4"/> Add Partner Logo
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {Object.entries(groups).map(([groupName, items]) => {
+                
+                // Identify if this is a dynamic group that can be safely deleted entirely
+                const isDynamicGroup = groupName.includes("Slide") || groupName.includes("Partner") || groupName.includes("Card") || groupName.includes("Certificate");
+                const currentGroupKey = `${sectionName}-${groupName}`;
+                const isEditingThisGroup = editingGroupKey === currentGroupKey;
+
+                return (
+                  /* --- CMS GROUP CARD --- */
+                  <div key={groupName} className={`bg-white p-6 rounded-xl border transition duration-300 ${isEditingThisGroup ? 'border-blue-300 shadow-lg ring-4 ring-blue-50' : 'border-slate-200 shadow-sm hover:shadow-md'}`}>
                     
-                    {/* --- NEW HERO BUTTON --- */}
-                    {sectionKey === "hero" && (
-                      <button onClick={handleAddSlide} className="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded flex items-center gap-1 transition">
-                        <ListPlus className="w-3 h-3" /> + Add Slide
-                      </button>
-                    )}
-
-                    {sectionKey === "trusted_by" && (
-                      <button onClick={() => handleQuickAdd(sectionKey, "image", "logo")} className="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded flex items-center gap-1 transition">
-                        <ListPlus className="w-3 h-3" /> Add Image Logo
-                      </button>
-                    )}
-                    {sectionKey === "quality" && (
-                      <button onClick={() => handleQuickAdd(sectionKey, "image", "cert")} className="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded flex items-center gap-1 transition">
-                        <ListPlus className="w-3 h-3" /> Add Image Cert
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Section Blocks */}
-                  <div className="p-4 space-y-4">
-                    {groupedContent[sectionKey].map((item: any) => (
-                      <div key={item.id} className="border border-slate-100 bg-slate-50 rounded-lg p-4 hover:border-concentra-purple/50 transition-colors">
-                        
-                        <div className="flex justify-between items-start mb-3">
-                          <div className="flex items-center gap-2">
-                            {item.content_type === "text" ? <Type className="w-4 h-4 text-blue-500" /> : <ImageIcon className="w-4 h-4 text-green-500" />}
-                            <span className="font-mono text-xs font-bold text-slate-500 bg-slate-200 px-2 py-1 rounded">
-                              {item.content_key}
-                            </span>
-                          </div>
-                          
-                          <div className="flex gap-2">
-                            {editingId !== item.id && (
-                              <>
-                                <button onClick={() => startEdit(item)} className="p-1.5 text-slate-400 hover:text-concentra-purple hover:bg-purple-50 rounded transition">
-                                  <Edit className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => handleDelete(item.id)} className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition">
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </>
-                            )}
-                          </div>
+                    {/* Card Header & Actions */}
+                    <div className="flex justify-between items-center mb-5 border-b border-slate-100 pb-3">
+                      <h3 className="font-bold text-lg text-slate-800">{groupName}</h3>
+                      
+                      {!isEditingThisGroup && (
+                        <div className="flex gap-2">
+                          {isDynamicGroup && (
+                            <button 
+                              onClick={() => handleDeleteGroup(items, groupName)}
+                              className="text-slate-400 hover:text-red-600 bg-slate-50 hover:bg-red-50 p-1.5 rounded transition"
+                              title="Delete Entire Group"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
+                          <button 
+                            onClick={() => startEditingGroup(sectionName, groupName, items)}
+                            className="text-slate-400 hover:text-blue-600 bg-slate-50 hover:bg-blue-50 p-1.5 rounded transition border border-transparent hover:border-blue-200"
+                            title="Edit Group"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
                         </div>
+                      )}
+                    </div>
+                    
+                    {/* Fields List */}
+                    <div className="space-y-4">
+                      {items.map((item) => {
+                        
+                        // EDITING MODE FOR THIS GROUP
+                        if (isEditingThisGroup) {
+                          const currentField = editState[item.id];
+                          if (!currentField) return null;
 
-                        {editingId === item.id ? (
-                          <div className="animate-in fade-in space-y-3 bg-white p-3 rounded border border-slate-200">
-                            {item.content_type === "text" ? (
-                              <textarea 
-                                value={editValue}
-                                onChange={(e) => setEditValue(e.target.value)}
-                                className="w-full border border-concentra-purple rounded-lg p-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-concentra-purple/20"
-                                rows={3}
-                              />
-                            ) : (
-                              <div className="flex flex-col gap-2">
-                                <span className="text-xs font-bold text-slate-500 uppercase">Upload New Image Replacement</span>
+                          return (
+                            <div key={item.id} className="bg-slate-50 p-3 rounded border border-slate-200">
+                              
+                              <p className="text-xs font-semibold text-slate-500 uppercase mb-2">
+                                {formatTitle(item.content_key)}
+                              </p>
+                              
+                              {/* TYPE SWAPPER RADIO BUTTONS */}
+                              <div className="flex items-center gap-4 mb-3 pb-2 border-b border-slate-200">
+                                <label className="text-xs font-bold text-slate-600 flex items-center gap-1 cursor-pointer">
+                                  <input type="radio" checked={currentField.type === 'text'} onChange={() => updateEditState(item.id, 'type', 'text')} /> 
+                                  Text Field
+                                </label>
+                                <label className="text-xs font-bold text-slate-600 flex items-center gap-1 cursor-pointer">
+                                  <input type="radio" checked={currentField.type === 'image'} onChange={() => updateEditState(item.id, 'type', 'image')} /> 
+                                  Image Upload
+                                </label>
+                              </div>
+
+                              {currentField.type === "text" ? (
+                                <textarea 
+                                  className="w-full text-sm border border-slate-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                                  rows={2}
+                                  value={currentField.value}
+                                  onChange={(e) => updateEditState(item.id, 'value', e.target.value)}
+                                />
+                              ) : (
                                 <input 
                                   type="file" 
-                                  accept="image/*" 
-                                  onChange={(e) => setEditFile(e.target.files?.[0] || null)} 
-                                  className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-concentra-purple/10 file:text-concentra-purple hover:file:bg-concentra-purple/20 cursor-pointer"
+                                  accept="image/*"
+                                  className="text-sm w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                  onChange={(e) => updateEditState(item.id, 'file', e.target.files?.[0] || null)}
                                 />
-                              </div>
-                            )}
-                            <div className="flex gap-2 pt-2">
-                              <button onClick={() => handleSaveEdit(item)} className="flex items-center gap-1 bg-concentra-green text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-green-700 transition">
-                                <Save className="w-4 h-4" /> Save Update
-                              </button>
-                              <button onClick={() => setEditingId(null)} className="flex items-center gap-1 bg-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-300 transition">
-                                <X className="w-4 h-4" /> Cancel
-                              </button>
+                              )}
+                            </div>
+                          );
+                        }
+
+                        // VIEW MODE FOR THIS GROUP
+                        return (
+                          <div key={item.id} className="relative group">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                                {item.content_type === "image" ? <ImageIcon className="w-3 h-3"/> : <Type className="w-3 h-3"/>}
+                                {formatTitle(item.content_key)}
+                              </p>
+                              
+                              {/* Fallback Single Delete for General Settings */}
+                              {!isDynamicGroup && (
+                                <button 
+                                  onClick={() => handleDeleteSingleField(item.id)}
+                                  className="text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </div>
+
+                            <div className="overflow-hidden">
+                              {item.content_type === "image" ? (
+                                <img 
+                                  src={item.content_value.startsWith('http') ? item.content_value : `http://localhost:8000/${item.content_value}`} 
+                                  alt={item.content_key} 
+                                  className="w-full h-24 object-cover rounded border border-slate-200 mt-1"
+                                />
+                              ) : (
+                                <p className="text-sm text-slate-700 line-clamp-3 leading-snug">
+                                  {item.content_value}
+                                </p>
+                              )}
                             </div>
                           </div>
-                        ) : (
-                          <div className="text-sm font-medium text-slate-900 break-words">
-                            {item.content_type === "image" ? (
-                               <div className="flex items-center gap-4">
-                                 <img src={item.content_value.startsWith('http') ? item.content_value : `http://localhost:8000/${item.content_value}`} alt="CMS Preview" className="w-16 h-16 object-cover rounded shadow-sm border border-slate-200 bg-white" />
-                                 <span className="text-xs text-slate-400 font-mono bg-white px-2 py-1 border border-slate-200 rounded">{item.content_value}</span>
-                               </div>
-                            ) : (
-                               item.content_value
-                            )}
-                          </div>
-                        )}
+                        );
+                      })}
+                    </div>
+
+                    {/* BULK SAVE BUTTONS AT THE END OF THE CARD */}
+                    {isEditingThisGroup && (
+                      <div className="flex justify-end gap-3 mt-5 pt-4 border-t border-slate-200 bg-white">
+                        <button 
+                          onClick={() => setEditingGroupKey(null)}
+                          className="text-sm px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition"
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          onClick={() => handleSaveGroup(items)}
+                          disabled={isSaving}
+                          className="text-sm px-5 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:opacity-50 transition shadow-sm"
+                        >
+                          {isSaving ? <Loader2 className="w-4 h-4 animate-spin"/> : <Save className="w-4 h-4" />}
+                          Save Changes
+                        </button>
                       </div>
-                    ))}
+                    )}
+
                   </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* ADD BLOCK MODAL */}
-      {showAddModal && (
-        <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center rounded-xl">
-          <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md border border-slate-200">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-bold text-lg text-slate-900">Add Content Block</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5"/></button>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-1">Section</label>
-                  <select 
-                    value={newBlock.section} 
-                    onChange={(e) => setNewBlock({...newBlock, section: e.target.value})}
-                    className="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-concentra-purple"
-                  >
-                    {/* Maps existing sections, or defaults */}
-                    {Array.from(new Set([...Object.keys(groupedContent), "hero", "trusted_by", "expertise", "quality", "global_reach", "cta"])).map(sec => (
-                      <option key={sec} value={sec}>{formatSectionName(sec)}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-1">Content Type</label>
-                  <select 
-                    value={newBlock.type} 
-                    onChange={(e) => setNewBlock({...newBlock, type: e.target.value, value: "", file: null})}
-                    className="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-concentra-purple font-bold text-concentra-purple"
-                  >
-                    <option value="text">Text / String</option>
-                    <option value="image">Image Upload</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-500 mb-1">Unique Key (e.g., card_1_image)</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. main_image or logo_5"
-                  value={newBlock.key} 
-                  onChange={(e) => setNewBlock({...newBlock, key: e.target.value.toLowerCase().replace(/ /g, '_')})}
-                  className="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-concentra-purple font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-500 mb-1">Content Payload</label>
-                {newBlock.type === "text" ? (
-                  <textarea 
-                    placeholder="Enter text here..."
-                    value={newBlock.value} 
-                    onChange={(e) => setNewBlock({...newBlock, value: e.target.value})}
-                    className="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-concentra-purple"
-                    rows={3}
-                  />
-                ) : (
-                  <div className="border border-slate-200 rounded-lg p-4 bg-slate-50 flex items-center justify-center">
-                     <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={(e) => setNewBlock({...newBlock, file: e.target.files?.[0] || null})} 
-                        className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-concentra-purple file:text-white hover:file:bg-purple-900 cursor-pointer"
-                      />
-                  </div>
-                )}
-              </div>
-
-              <button 
-                onClick={handleAddNew}
-                className="w-full bg-concentra-purple text-white py-3 rounded-lg font-bold shadow-md hover:bg-purple-900 transition-colors mt-2"
-              >
-                Create & Save to Database
-              </button>
+                );
+              })}
             </div>
           </div>
-        </div>
-      )}
+        );
+      })}
 
     </div>
   );
