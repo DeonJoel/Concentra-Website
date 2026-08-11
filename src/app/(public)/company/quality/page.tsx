@@ -6,7 +6,7 @@ export default function QualityPage() {
     <main className="min-h-screen w-full bg-transparent">
       
       {/* 1. HERO SECTION */}
-      <section className="relative w-full h-[60vh] min-h-[500px]">
+      <section className="relative w-full h-[65vh] min-h-[500px]">
         <div 
           className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1580983546592-365287f32991?q=80&w=2070&auto=format&fit=crop')" }}
@@ -16,7 +16,7 @@ export default function QualityPage() {
           style={{ backgroundImage: "linear-gradient(to right, #FFFFFF 0%, rgba(255,255,255,0.9) 58%, rgba(255,255,255,0) 80%)" }}
         ></div>
 
-        <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
+        <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full pt-15">
           <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full pt-10">
             <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
               Company / Quality Assurance

@@ -6,7 +6,7 @@ export default function CuttingToolsPage() {
     <main className="min-h-screen w-full bg-transparent">
       
       {/* 1. HERO SECTION */}
-      <section className="relative w-full h-[60vh] min-h-[500px]">
+      <section className="relative w-full h-[65vh] min-h-[500px]">
         {/* Background Image (CNC Cutting/Milling focus) */}
         <div 
           className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
@@ -22,7 +22,7 @@ export default function CuttingToolsPage() {
         ></div>
 
         {/* Hero Content aligned to Grid */}
-        <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
+        <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full pt-15">
           {/* Text constrained: Starts at column 2, spans 6 columns */}
           <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full pt-10">
             <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
