@@ -47,7 +47,7 @@ export default function ContactUsPage() {
     <main className="min-h-screen w-full bg-slate-50/50">
       
       {/* 1. HERO SECTION */}
-      <section className="relative w-full h-[50vh] min-h-[400px]">
+      <section className="relative w-full h-[60vh] min-h-[400px]">
         <div 
           className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=2071&auto=format&fit=crop')" }}
