@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function QualityCertificates() {
@@ -112,9 +112,12 @@ export default function QualityCertificates() {
             </div>
 
             {/* Dynamic Button Text */}
-            <button className="bg-transparent hover:bg-concentra-green border-2 border-concentra-green text-concentra-green hover:text-white font-semibold py-3 px-8 rounded transition duration-300 shadow-sm">
+            <Link 
+              href="/company/facilities"
+              className="bg-transparent hover:bg-concentra-green border-2 border-concentra-green text-concentra-green hover:text-white font-semibold py-3 px-8 rounded transition duration-300 shadow-sm inline-block"
+            >
               {buttonText}
-            </button>
+            </Link>
             
           </div>
 

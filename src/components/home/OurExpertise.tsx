@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link"; // 1. Added Link import
 
 export default function OurExpertise() {
   const [cmsData, setCmsData] = useState<any[]>([]);
@@ -42,12 +43,16 @@ export default function OurExpertise() {
   // 2. Helper function to extract specific card data from the CMS array
   const getCardData = (num: number) => {
     const defaultTitles = ["Spindle Remanufacturing", "Component Manufacturing", "HSK Tool Clamping Sets"];
+    // 2. Added default routing based on your folder structure
+    const defaultLinks = ["/services", "/services", "/products"];
     
     return {
       id: num,
       title: getValue(`card_${num}_title`, defaultTitles[num - 1]),
       description: getValue(`card_${num}_desc`, "Placeholder description coming from CMS. Add a text block for this card."),
-      image: getValue(`card_${num}_image`, "")
+      image: getValue(`card_${num}_image`, ""),
+      // 3. Extracted link value with a fallback to the default links
+      link: getValue(`card_${num}_link`, defaultLinks[num - 1]) 
     };
   };
 
@@ -78,9 +83,11 @@ export default function OurExpertise() {
             
             {/* Map through our dynamically generated cards */}
             {cards.map((item) => (
-              <div 
+              // 4. Converted the outer div to a Link component
+              <Link 
+                href={item.link}
                 key={item.id} 
-                className="bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 flex flex-col p-8 transition-transform duration-300 hover:-translate-y-2 cursor-pointer h-[400px] md:h-[500px]"
+                className="bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 flex flex-col p-8 transition-transform duration-300 hover:-translate-y-2 cursor-pointer h-[400px] md:h-[500px] block"
               >
                 <h3 className="text-industrial-slate font-bold text-center text-lg mb-4">
                   {item.title}
@@ -108,7 +115,7 @@ export default function OurExpertise() {
                   )}
                 </div>
 
-              </div>
+              </Link>
             ))}
 
           </div>
