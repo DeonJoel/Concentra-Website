@@ -3,6 +3,7 @@
 A high-performance, responsive React frontend for Concentra Precision Technologies' B2B web application. Built with Next.js App Router and Tailwind CSS, this portal includes a public product catalogue and a secure internal admin terminal for managing content, HR, and RFQ pipelines.
 
 ## 🚀 What’s included
+
 - Public-facing B2B website with product, services, company, and quote request pages
 - Secure admin terminal under `/hq-command-77x`
 - Dynamic RFQ detail pages at `/hq-command-77x/dashboard/rfq/[id]`
@@ -10,6 +11,7 @@ A high-performance, responsive React frontend for Concentra Precision Technologi
 - Modern Next.js App Router architecture with reusable UI components
 
 ## 📌 Key Features
+
 - **Next.js App Router:** Fast server-side rendering, layout nesting, and route groups
 - **Tailwind CSS:** Responsive utility-first styling with custom brand theming
 - **Admin Dashboard:** Protected admin experience for analytics, RFQs, content, and users
@@ -17,12 +19,15 @@ A high-performance, responsive React frontend for Concentra Precision Technologi
 - **Modular Components:** Shared and home-specific components for easy maintenance
 
 ## 🛠 Prerequisites
+
 Install the following before setup:
+
 - Node.js v18.17.0 or higher
 - npm, yarn, pnpm, or bun
 - Git
 
 ## 📦 Installation
+
 1. Clone the repository:
 
 ```bash
@@ -48,6 +53,7 @@ npm run dev
 - Admin portal: `http://localhost:3000/hq-command-77x`
 
 ## 🔧 Environment Variables
+
 Create a `.env.local` file in the project root.
 
 Example:
@@ -59,12 +65,14 @@ NEXT_PUBLIC_API_URL="http://localhost:8000"
 > Add any additional public keys or analytics values as needed.
 
 ## 📜 Available Scripts
+
 - `npm run dev` — Start development server with HMR
 - `npm run build` — Build the app for production
 - `npm run start` — Start the production server
 - `npm run lint` — Run ESLint checks
 
 ## 📁 Project Structure
+
 ```
 concentra-portal/
 ├── public/                     # Static assets (images, SVGs, icons)
@@ -94,19 +102,23 @@ concentra-portal/
 ```
 
 ## 🔗 Backend Integration
+
 This frontend is designed to work with the Concentra Website Backend (FastAPI).
 
 To use the admin functions and RFQ workflows:
+
 1. Start the backend on `http://localhost:8000`
 2. Confirm `NEXT_PUBLIC_API_URL` matches the backend URL
 3. Verify proxy settings in `src/proxy.ts` or `next.config.ts`
 
 ## 🚀 Deployment Notes
+
 - For production, build with `npm run build`
 - Host on Vercel, Netlify, or any platform supporting Next.js
 - Ensure backend API is accessible from the deployed frontend
 
 ## 📚 Additional Resources
+
 - Next.js Docs: https://nextjs.org/docs
 - Tailwind CSS Docs: https://tailwindcss.com/docs
 - Vercel Deploy: https://vercel.com/docs
