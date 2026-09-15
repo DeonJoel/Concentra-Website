@@ -73,7 +73,7 @@ export default function RequestQuote() {
     }
 
     try {
-        const response = await fetch("http://localhost:8000/api/submit-rfq", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/submit-rfq`, {
             method: "POST",
             body: formData, // Sending as FormData ensures secure multipart encoding
         });

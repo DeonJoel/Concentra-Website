@@ -44,7 +44,7 @@ export default function AdminCareersPage() {
   const fetchApplications = async () => {
     setIsLoadingApps(true);
     try {
-      const res = await fetch("http://localhost:8000/api/applications");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`);
       if (res.ok) {
         const data = await res.json();
         setApplications(data);
@@ -59,7 +59,7 @@ export default function AdminCareersPage() {
   const fetchActiveJobs = async () => {
     setIsLoadingJobs(true);
     try {
-      const res = await fetch("http://localhost:8000/api/jobs");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs`);
       if (res.ok) {
         const data = await res.json();
         setActiveJobs(data);
@@ -80,7 +80,7 @@ export default function AdminCareersPage() {
     const jobData = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:8000/api/jobs", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(jobData),
@@ -106,7 +106,7 @@ export default function AdminCareersPage() {
     if (!confirm("Are you sure you want to remove this job posting from the public website?")) return;
     
     try {
-      const response = await fetch(`http://localhost:8000/api/jobs/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${id}`, {
         method: "DELETE",
       });
 

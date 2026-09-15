@@ -11,7 +11,7 @@ export default function OurExpertise() {
   useEffect(() => {
     async function fetchExpertiseData() {
       try {
-        const response = await fetch("http://localhost:8000/api/content/home");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/content/home`);
         if (!response.ok) throw new Error("Failed to fetch CMS data");
         
         const data = await response.json();
@@ -102,7 +102,7 @@ export default function OurExpertise() {
                 <div className="flex-grow w-full rounded-lg overflow-hidden flex items-center justify-center bg-gray-50/50 border border-gray-100 relative">
                   {item.image ? (
                     <img 
-                      src={item.image.startsWith('http') ? item.image : `http://localhost:8000/${item.image}`} 
+                      src={item.image.startsWith('http') ? item.image : `${process.env.NEXT_PUBLIC_API_URL}/${item.image}`} 
                       alt={item.title} 
                       className="w-full h-full object-cover"
                     />

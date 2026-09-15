@@ -24,7 +24,7 @@ export default function CareersPage() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/jobs");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs`);
         if (res.ok) {
           const data = await res.json();
           setOpenPositions(data);
@@ -54,7 +54,7 @@ export default function CareersPage() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:8000/api/applications", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

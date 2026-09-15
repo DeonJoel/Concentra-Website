@@ -15,7 +15,7 @@ export default function TrustedBy() {
     async function fetchTrustedLogos() {
       try {
         // Fetching all content for the "home" page
-        const response = await fetch("http://localhost:8000/api/content/home");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/content/home`);
         if (!response.ok) throw new Error("Failed to fetch CMS data");
         
         const data = await response.json();
@@ -87,7 +87,7 @@ export default function TrustedBy() {
                       <div className="w-full h-20 flex items-center justify-center cursor-grab active:cursor-grabbing">
                         <img 
                           // Prepend the backend URL so it finds the public_uploads folder correctly
-                          src={`http://localhost:8000/${logo.content_value}`} 
+                          src={`${process.env.NEXT_PUBLIC_API_URL}/${logo.content_value}`} 
                           alt={logo.content_key} 
                           className="max-h-full max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
                         />

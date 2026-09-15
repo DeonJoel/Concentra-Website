@@ -36,7 +36,7 @@ export default function HomeCMSDashboard() {
   const fetchContent = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/content/home");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/content/home`);
       if (!res.ok) throw new Error("Failed to fetch CMS data");
       const json = await res.json();
       setData(json);
@@ -92,7 +92,7 @@ export default function HomeCMSDashboard() {
         // 🚀 SCENARIO 1: They swapped the type (e.g. Text -> Image)
         if (current.type !== item.content_type) {
           // Delete old block
-          await fetch(`http://localhost:8000/api/admin/content/${item.id}`, { 
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content/${item.id}`, { 
             method: "DELETE", credentials: "include" 
           });
 
@@ -109,7 +109,7 @@ export default function HomeCMSDashboard() {
             formData.append("content_value", current.value || "Placeholder");
           }
           
-          await fetch("http://localhost:8000/api/admin/content", { 
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content`, { 
             method: "POST", body: formData, credentials: "include" 
           });
         } 
@@ -129,7 +129,7 @@ export default function HomeCMSDashboard() {
 
           // Only hit the API if they actually changed the text or uploaded a new file
           if (hasChanges) {
-            await fetch(`http://localhost:8000/api/admin/content/${item.id}`, { 
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content/${item.id}`, { 
               method: "PUT", body: formData, credentials: "include" 
             });
           }
@@ -157,7 +157,7 @@ export default function HomeCMSDashboard() {
     try {
       // Delete all fields belonging to this slide/partner concurrently
       const promises = items.map(item => 
-        fetch(`http://localhost:8000/api/admin/content/${item.id}`, { method: "DELETE", credentials: "include" })
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content/${item.id}`, { method: "DELETE", credentials: "include" })
       );
       
       await Promise.all(promises);
@@ -174,7 +174,7 @@ export default function HomeCMSDashboard() {
     if (!confirm("Delete this individual field?")) return;
     setIsLoading(true);
     try {
-      await fetch(`http://localhost:8000/api/admin/content/${id}`, { method: "DELETE", credentials: "include" });
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content/${id}`, { method: "DELETE", credentials: "include" });
       await fetchContent();
     } catch (e) {
       console.error(e);
@@ -209,7 +209,7 @@ export default function HomeCMSDashboard() {
       formData.append("content_type", field.type);
       formData.append("content_key", field.key);
       formData.append("content_value", field.val);
-      await fetch("http://localhost:8000/api/admin/content", { method: "POST", body: formData, credentials: "include" });
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content`, { method: "POST", body: formData, credentials: "include" });
     }
     await fetchContent();
   };
@@ -230,7 +230,7 @@ export default function HomeCMSDashboard() {
     formData.append("content_key", `trusted_logo_${nextId}`);
     formData.append("content_value", "New Partner");
     
-    await fetch("http://localhost:8000/api/admin/content", { method: "POST", body: formData, credentials: "include" });
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/content`, { method: "POST", body: formData, credentials: "include" });
     await fetchContent();
   };
 
@@ -433,7 +433,7 @@ export default function HomeCMSDashboard() {
                             <div className="overflow-hidden">
                               {item.content_type === "image" ? (
                                 <img 
-                                  src={item.content_value.startsWith('http') ? item.content_value : `http://localhost:8000/${item.content_value}`} 
+                                  src={item.content_value.startsWith('http') ? item.content_value : `${process.env.NEXT_PUBLIC_API_URL}/${item.content_value}`} 
                                   alt={item.content_key} 
                                   className="w-full h-24 object-cover rounded border border-slate-200 mt-1"
                                 />

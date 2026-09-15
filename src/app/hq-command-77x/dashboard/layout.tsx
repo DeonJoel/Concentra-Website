@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/admin/me", { credentials: "include" });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/me`, { credentials: "include" });
         if (response.ok) {
           const data = await response.json();
           setUserRole(data.role);
@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8000/api/admin/logout", { method: "POST", credentials: "include" });
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/logout`, { method: "POST", credentials: "include" });
     } finally {
       window.location.href = "/hq-command-77x";
     }

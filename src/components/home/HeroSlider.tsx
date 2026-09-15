@@ -33,7 +33,7 @@ export default function HeroSlider() {
   useEffect(() => {
     async function fetchSliderData() {
       try {
-        const response = await fetch("http://localhost:8000/api/content/home");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/content/home`);
         if (!response.ok) throw new Error("Failed to fetch CMS data");
         
         const data = await response.json();
@@ -41,11 +41,10 @@ export default function HeroSlider() {
         // Isolate only the hero slider data
         const sliderData = data.filter((item: any) => item.section === "hero_slider");
         
-        // Group the flat keys (slide_1_title, slide_1_image) into distinct slide objects
+        // Group the flat keys into distinct slide objects
         const groupedSlides: Record<number, any> = {};
         
         sliderData.forEach((item: any) => {
-          // Extract the number and the property name using regex (e.g., "slide_1_title" -> "1", "title")
           const match = item.content_key.match(/^slide_(\d+)_(.+)$/);
           if (match) {
             const slideId = parseInt(match[1], 10);
@@ -58,7 +57,6 @@ export default function HeroSlider() {
           }
         });
 
-        // Convert the grouped object back to an array and sort by ID so slide 1 comes before slide 2
         const slidesArray = Object.values(groupedSlides).sort((a: any, b: any) => a.id - b.id);
         setSlides(slidesArray);
         
@@ -72,17 +70,15 @@ export default function HeroSlider() {
     fetchSliderData();
   }, []);
 
-  // Helper to format image paths
   const getImageUrl = (url: string) => {
     if (!url) return '';
-    return url.startsWith('http') ? url : `http://localhost:8000/${url}`;
+    return url.startsWith('http') ? url : `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
   };
 
   return (
     <div className="relative w-full h-screen min-h-[600px]">
       
       {isLoading ? (
-        // Simple loading state to prevent flash of unstyled content
         <div className="w-full h-full bg-stone-100 animate-pulse flex items-center justify-center">
           <span className="text-industrial-slate font-medium">Loading Experience...</span>
         </div>
@@ -92,12 +88,11 @@ export default function HeroSlider() {
           effect="fade"
           pagination={{ clickable: true }}
           autoplay={{ delay: 6000, disableOnInteraction: false }}
-          loop={slides.length > 1} // Only loop if there is more than 1 slide
+          loop={slides.length > 1}
           className="w-full h-full"
         >
           
           {slides.length > 0 ? (
-            // DYNAMIC RENDERING: Map through CMS slides
             slides.map((slide) => (
               <SwiperSlide key={slide.id}>
                 <div className="relative w-full h-full flex items-center">
@@ -114,33 +109,35 @@ export default function HeroSlider() {
                     style={smoothGradient}
                   ></div>
 
-                  {/* Content Grid (Confined to cols 2-6) */}
+                  {/* Content Grid */}
                   <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
-                    <div className="col-span-12 lg:col-start-2 lg:col-span-6 flex flex-col justify-center h-full">
+                    
+                    {/* HARD BUMPER APPLIED HERE: pt-[120px] on mobile/tablet, pt-[160px] on desktop */}
+                    <div className="col-span-12 lg:col-start-2 lg:col-span-7 flex flex-col justify-center h-full pt-[120px] lg:pt-[160px] pb-12">
                       
                       <div>
                         {slide.subtitle && (
-                          <p className="text-concentra-purple text-sm md:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
+                          <p className="text-concentra-purple text-xs md:text-sm lg:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
                             {slide.subtitle}
                           </p>
                         )}
                         
+                        {/* Scaled Typography: 3xl (Mobile) -> 4xl (Tablet) -> 5xl (Desktop) -> 6xl (Large Screens) */}
                         {slide.title && (
-                          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
+                          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
                             {slide.title}
                           </h1>
                         )}
                         
+                        {/* Scaled Description: Shrinks slightly on mobile to prevent excessive height */}
                         {slide.description && (
-                          <p className="text-base md:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl whitespace-pre-wrap">
+                          <p className="text-sm md:text-base lg:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl whitespace-pre-wrap">
                             {slide.description}
                           </p>
                         )}
                         
-                        {/* DYNAMIC BUTTON LOGIC: Adjusts layout based on how many buttons exist */}
                         <div className="flex flex-col sm:flex-row gap-4">
                           
-                          {/* Button 1 (Solid Green Style) */}
                           {slide.btn1_text && slide.btn1_link && (
                             <Link 
                               href={slide.btn1_link}
@@ -150,7 +147,6 @@ export default function HeroSlider() {
                             </Link>
                           )}
                           
-                          {/* Button 2 (Transparent Outline Style) */}
                           {slide.btn2_text && slide.btn2_link && (
                             <Link 
                               href={slide.btn2_link}
@@ -161,7 +157,6 @@ export default function HeroSlider() {
                           )}
                           
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -169,7 +164,6 @@ export default function HeroSlider() {
               </SwiperSlide>
             ))
           ) : (
-            // FALLBACK: In case CMS is totally empty, show a blank placeholder slide
             <SwiperSlide>
               <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100">
                 <h1 className="text-2xl text-gray-500 font-bold mb-2">No Slides Found</h1>

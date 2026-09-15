@@ -18,7 +18,7 @@ export default function SecureDashboard() {
   useEffect(() => {
     const fetchRfqs = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/admin/rfqs", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/rfqs`, {
           credentials: "include",
         });
         if (response.ok) {

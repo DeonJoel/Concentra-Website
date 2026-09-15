@@ -28,7 +28,7 @@ export default function RFQDetailsPage() {
 
     const fetchSingleRfq = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/admin/rfqs/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/rfqs/${id}`, {
                 credentials: "include",
             });
             if (response.ok) {
@@ -49,7 +49,7 @@ export default function RFQDetailsPage() {
     const handleApprove = async () => {
         setIsUpdating(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/admin/rfqs/${id}/status`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/rfqs/${id}/status`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "Approved" }),
@@ -75,7 +75,7 @@ export default function RFQDetailsPage() {
 
         setIsUpdating(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/admin/rfqs/${id}/status`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/rfqs/${id}/status`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "Rejected", reason: rejectReason }),
@@ -160,7 +160,7 @@ export default function RFQDetailsPage() {
                             </span>
                         </div>
                         <div className="flex-1 relative overflow-hidden bg-slate-100 border-t border-slate-200 rounded-b-xl">
-                            <CADViewer fileUrl={`http://localhost:8000/api/admin/rfqs/${rfq.id}/file`} />
+                            <CADViewer fileUrl={`${process.env.NEXT_PUBLIC_API_URL}/api/admin/rfqs/${rfq.id}/file`} />
                         </div>
                     </div>
 

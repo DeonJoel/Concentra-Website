@@ -35,20 +35,18 @@ export default function Navbar() {
         <div className="col-start-1 lg:col-start-2 col-span-12 lg:col-span-10 flex items-center justify-between h-20">
           
           {/* 1. LOGO SECTION */}
-          {/* Logo sits on the left where your HeroSlider's white gradient is, so it remains readable */}
-          <Link href="/" className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition duration-300">
-            <svg width="40" height="40" viewBox="0 0 100 100" className="w-10 h-10">
-              <circle cx="40" cy="50" r="30" fill="var(--color-concentra-purple)" />
-              <circle cx="60" cy="50" r="30" fill="var(--color-concentra-green)" opacity="0.8" />
-            </svg>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-concentra-purple leading-tight">
-                Concentra
-              </span>
-              <span className="text-[10px] font-semibold text-concentra-green uppercase tracking-wider">
-                Precision Technologies
-              </span>
-            </div>
+          {/* FIXED: Added 'shrink-0' to both the Link and img so it never gets crushed on mobile */}
+          <Link href="/" className="flex shrink-0 items-center pr-2 lg:pr-2 cursor-pointer hover:opacity-80 transition duration-300">
+            <img
+              src="/Concentra_LOGO.png"
+              alt="Concentra"
+              // CONTROL THE HEIGHT HERE:
+              // isScrolled ? "h-12" -> Height when scrolling down (48px)
+              // : "h-14" -> Initial height at the very top (56px)
+              className={`w-auto shrink-0 object-contain transition-all duration-300 ${
+                isScrolled ? "h-12" : "h-14"
+              }`}
+            />
           </Link>
 
           {/* 2. DESKTOP CENTER LINKS */}
@@ -63,7 +61,7 @@ export default function Navbar() {
 
           {/* 3. DESKTOP RIGHT LINKS & CTA */}
           {/* Added a dynamic glass-morphism pill effect around the right-side actions */}
-          <div className={`hidden lg:flex items-center gap-4 text-xs font-bold transition-all duration-300 ${
+          <div className={`hidden lg:flex shrink-0 items-center gap-4 text-xs font-bold transition-all duration-300 ${
             !isScrolled 
               ? "bg-white/80 backdrop-blur-md pl-6 pr-2 py-1.5 rounded-full shadow-sm border border-white/50 text-industrial-slate" 
               : "text-industrial-slate"
@@ -72,14 +70,14 @@ export default function Navbar() {
             <span className="text-gray-300">|</span>
             <Link href="/request-quote" className="hover:text-concentra-purple transition">Request Quote</Link>
             <Link href="/contact-us">
-              <button className="bg-concentra-green hover:bg-green-600 text-white px-5 py-2.5 rounded-full transition duration-300 shadow-md">
+              <button className="bg-concentra-green hover:bg-green-600 text-white px-5 py-2.5 rounded-full transition duration-300 shadow-md whitespace-nowrap">
                 Contact Us
               </button>
             </Link>
           </div>
 
           {/* 4. MOBILE HAMBURGER ICON */}
-          <div className="lg:hidden flex items-center">
+          <div className="lg:hidden flex shrink-0 items-center">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`text-concentra-green focus:outline-none transition-all duration-300 ${

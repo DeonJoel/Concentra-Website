@@ -15,7 +15,7 @@ export default function AccessControlPage() {
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/admin/users", { credentials: "include" });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users`, { credentials: "include" });
       if (response.ok) {
         setUsers(await response.json());
       }
@@ -40,7 +40,7 @@ export default function AccessControlPage() {
     formData.append("password", newUser.password);
 
     try {
-      const response = await fetch("http://localhost:8000/api/admin/users", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users`, {
         method: "POST",
         body: formData,
         credentials: "include"
@@ -64,7 +64,7 @@ export default function AccessControlPage() {
     if (!confirm("Are you sure you want to permanently revoke this user's access?")) return;
     
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/users/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${id}`, {
         method: "DELETE",
         credentials: "include"
       });

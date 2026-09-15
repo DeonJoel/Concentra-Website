@@ -10,7 +10,7 @@ export default function QualityCertificates() {
   useEffect(() => {
     async function fetchQualityData() {
       try {
-        const response = await fetch("http://localhost:8000/api/content/home");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/content/home`);
         if (!response.ok) throw new Error("Failed to fetch CMS data");
         
         const data = await response.json();
@@ -51,7 +51,7 @@ export default function QualityCertificates() {
   // Helper to format the image URL for the main background
   const getBgImageUrl = (url: string) => {
     if (!url) return '';
-    return url.startsWith('http') ? url : `http://localhost:8000/${url}`;
+    return url.startsWith('http') ? url : `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
   };
 
   // Check if we only have one certificate to adjust sizing dynamically
@@ -98,7 +98,7 @@ export default function QualityCertificates() {
                   {/* DYNAMIC RENDER: Image vs Text */}
                   {cert.content_type === "image" ? (
                     <img 
-                      src={cert.content_value.startsWith('http') ? cert.content_value : `http://localhost:8000/${cert.content_value}`} 
+                      src={cert.content_value.startsWith('http') ? cert.content_value : `${process.env.NEXT_PUBLIC_API_URL}/${cert.content_value}`} 
                       alt="Certificate Logo" 
                       className="w-full h-full object-contain"
                     />

@@ -17,7 +17,7 @@ export default function SecureLogin() {
   useEffect(() => {
     const verifySession = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/admin/me", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/me`, {
           credentials: "include",
         });
         if (response.ok) {
@@ -44,7 +44,7 @@ export default function SecureLogin() {
     formData.append("password", password);
 
     try {
-      const response = await fetch("http://localhost:8000/api/admin/login", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/login`, {
         method: "POST",
         body: formData,
         credentials: "include",

@@ -16,7 +16,7 @@ export default function AIAnalyticsPage() {
   useEffect(() => {
     const fetchAiQueue = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/admin/ai-queue", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/ai-queue`, {
           credentials: "include",
         });
         if (response.ok) {
@@ -37,7 +37,7 @@ export default function AIAnalyticsPage() {
 
         // Check the new ai_analyses table in the database
         try {
-            const response = await fetch(`http://localhost:8000/api/admin/ai-queue/${rfq.id}/analysis`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/ai-queue/${rfq.id}/analysis`, {
                 credentials: "include",
             });
             if (response.ok) {
@@ -57,7 +57,7 @@ export default function AIAnalyticsPage() {
     setIsAnalyzing(true);
     
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/ai-queue/${selectedRfq.id}/analyze`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/ai-queue/${selectedRfq.id}/analyze`, {
         method: "POST",
         credentials: "include",
       });
@@ -81,7 +81,7 @@ export default function AIAnalyticsPage() {
     setIsGeneratingQA(true);
     
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/ai-queue/${selectedRfq.id}/quality-sheet`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/ai-queue/${selectedRfq.id}/quality-sheet`, {
         method: "POST",
         credentials: "include",
       });
@@ -175,7 +175,7 @@ export default function AIAnalyticsPage() {
                 </h3>
                 <div className="bg-slate-100 rounded-lg border border-slate-200 h-[550px] overflow-hidden flex items-center justify-center shadow-inner">
                   <iframe
-                    src={`http://localhost:8000/api/admin/ai-queue/${selectedRfq.id}/file`}
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/api/admin/ai-queue/${selectedRfq.id}/file`}
                     className="w-full h-full"
                     title="Blueprint Viewer"
                   />

@@ -49,7 +49,7 @@ export default function EnquiryPortal() {
 
     try {
         // We will hit a new dedicated public endpoint for AI Enquiries
-        const response = await fetch("http://localhost:8000/api/submit-ai-enquiry", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/submit-ai-enquiry`, {
             method: "POST",
             body: formData,
         });

@@ -25,7 +25,7 @@ export default function AdminContactMessagesPage() {
   const fetchMessages = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/admin/contact", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/contact`, {
         credentials: "include", // Required to send the admin token
       });
       if (res.ok) {
@@ -42,7 +42,7 @@ export default function AdminContactMessagesPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to permanently delete this message?")) return;
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/contact/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/contact/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

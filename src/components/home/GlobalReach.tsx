@@ -10,7 +10,7 @@ export default function GlobalReach() {
   useEffect(() => {
     async function fetchReachData() {
       try {
-        const response = await fetch("http://localhost:8000/api/content/home");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/content/home`);
         if (!response.ok) throw new Error("Failed to fetch CMS data");
         
         const data = await response.json();
@@ -78,7 +78,7 @@ export default function GlobalReach() {
               {/* DYNAMIC RENDER: Show Map Image if uploaded, otherwise show placeholder */}
               {mapImage ? (
                 <img 
-                  src={mapImage.startsWith('http') ? mapImage : `http://localhost:8000/${mapImage}`} 
+                  src={mapImage.startsWith('http') ? mapImage : `${process.env.NEXT_PUBLIC_API_URL}/${mapImage}`} 
                   alt="Global Reach Map" 
                   className="w-full h-auto max-h-[400px] object-contain"
                 />
