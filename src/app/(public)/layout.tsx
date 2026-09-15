@@ -40,7 +40,7 @@ export default function RootLayout({
         <Breadcrumb />
 
         {/* 2. Inject the GridOverlay here */}
-        <GridOverlay />
+        {/* <GridOverlay /> */}
         {children}
 
         {/* 3. Global Footer at the bottom of every page */}

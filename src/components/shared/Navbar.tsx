@@ -2,57 +2,65 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import NavDropdowns from "./NavDropdowns";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
-  // Watches the scroll position to trigger the solid background and shadow
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isTransparent = isHome && !isScrolled;
+
   return (
     <nav 
-      // Changed to 'fixed' so it overlays the hero slider perfectly. 
-      // Dynamic classes handle the transition from transparent to solid white.
-      className={`w-full fixed top-0 left-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-md py-0" 
-          : "bg-transparent py-2"
-      }`}
+      className={`
+        z-50 transition-all duration-500 
+        
+        /* HARD-LOCKED MOBILE PILL (Will never stretch or bloat) */
+        w-[calc(100%-2rem)] mx-auto h-14 rounded-full bg-white shadow-xl
+        
+        /* DESKTOP RESET (Full width, standard height) */
+        lg:w-full lg:mx-0 lg:h-20 lg:rounded-none
+        
+        /* DYNAMIC POSITIONING */
+        /* Home: Fixed overlay. Others: Sticky with a top margin to match the pill look */
+        ${isHome 
+          ? "fixed left-0 right-0 top-4 lg:top-0" 
+          : "sticky top-4 lg:top-0 mt-4 lg:mt-0"}
+        
+        /* DYNAMIC DESKTOP BACKGROUND */
+        ${isTransparent 
+          ? "lg:bg-transparent lg:shadow-none" 
+          : "lg:bg-white/95 lg:backdrop-blur-md lg:shadow-md"}
+      `}
     >
       
-      {/* Figma Grid matching exactly (12 cols, 32px gap, 80px margin on desktop) */}
-      <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
-        
-        {/* Starts at column 2, and spans exactly 10 columns */}
-        <div className="col-start-1 lg:col-start-2 col-span-12 lg:col-span-10 flex items-center justify-between h-20">
+      {/* Container - Notice 'h-full' ensures it perfectly matches the locked nav height */}
+      <div className="w-full h-full grid grid-cols-12 lg:gap-[32px] px-4 lg:px-[80px]">
+        <div className="col-span-12 lg:col-start-2 lg:col-span-10 flex items-center justify-between h-full">
           
           {/* 1. LOGO SECTION */}
-          {/* FIXED: Added 'shrink-0' to both the Link and img so it never gets crushed on mobile */}
-          <Link href="/" className="flex shrink-0 items-center pr-2 lg:pr-2 cursor-pointer hover:opacity-80 transition duration-300">
+          <Link href="/" className="flex shrink-0 items-center pl-2 lg:pl-0 pr-2 cursor-pointer hover:opacity-80 transition duration-300">
             <img
               src="/Concentra_LOGO.png"
               alt="Concentra"
-              // CONTROL THE HEIGHT HERE:
-              // isScrolled ? "h-12" -> Height when scrolling down (48px)
-              // : "h-14" -> Initial height at the very top (56px)
-              className={`w-auto shrink-0 object-contain transition-all duration-300 ${
-                isScrolled ? "h-12" : "h-14"
-              }`}
+              // Locked sizes: h-8 on mobile, h-12 on desktop
+              className="w-auto shrink-0 object-contain h-8 lg:h-12"
             />
           </Link>
 
           {/* 2. DESKTOP CENTER LINKS */}
-          {/* Added a dynamic glass-morphism pill effect around the center links */}
           <div className={`hidden lg:flex items-center transition-all duration-300 ${
-            !isScrolled 
+            isTransparent 
               ? "bg-white/80 backdrop-blur-md px-6 py-2 rounded-full shadow-sm border border-white/50" 
               : ""
           }`}>
@@ -60,9 +68,8 @@ export default function Navbar() {
           </div>
 
           {/* 3. DESKTOP RIGHT LINKS & CTA */}
-          {/* Added a dynamic glass-morphism pill effect around the right-side actions */}
           <div className={`hidden lg:flex shrink-0 items-center gap-4 text-xs font-bold transition-all duration-300 ${
-            !isScrolled 
+            isTransparent 
               ? "bg-white/80 backdrop-blur-md pl-6 pr-2 py-1.5 rounded-full shadow-sm border border-white/50 text-industrial-slate" 
               : "text-industrial-slate"
           }`}>
@@ -77,15 +84,21 @@ export default function Navbar() {
           </div>
 
           {/* 4. MOBILE HAMBURGER ICON */}
-          <div className="lg:hidden flex shrink-0 items-center">
+          <div className="lg:hidden flex shrink-0 items-center pr-2">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`text-concentra-green focus:outline-none transition-all duration-300 ${
-                !isScrolled ? "bg-white/80 backdrop-blur-md p-2 rounded-full shadow-sm" : "p-2"
-              }`}
+              className="text-concentra-green focus:outline-none transition-transform duration-300 active:scale-95"
             >
               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2.5} 
+                  d={isMobileMenuOpen 
+                    ? "M6 18L18 6M6 6l12 12" 
+                    : "M4 7h16M10 12h10M4 17h16" 
+                  } 
+                />
               </svg>
             </button>
           </div>
@@ -94,21 +107,29 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE DROPDOWN MENU */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-[88px] left-0 w-full bg-white shadow-xl border-t border-gray-100 p-6 flex flex-col gap-4 animate-in slide-in-from-top-2">
-          <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple">Products</Link>
-          <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple">Services</Link>
-          <Link href="/company" className="text-industrial-slate font-semibold hover:text-concentra-purple">Company Details</Link>
-          <hr className="my-2 border-slate-100" />
-          <Link href="/careers" className="text-industrial-slate font-semibold hover:text-concentra-purple">Careers</Link>
-          <Link href="/request-quote" className="text-industrial-slate font-semibold hover:text-concentra-purple">Request Quote</Link>
-          <Link href="/contact-us" className="w-full">
-            <button className="bg-concentra-green text-white font-bold py-3 mt-2 rounded-xl w-full shadow-md">
-              Contact Us
-            </button>
-          </Link>
-        </div>
-      )}
+      <div 
+        className={`
+          lg:hidden absolute left-0 w-full bg-white shadow-2xl rounded-2xl border border-gray-100 p-6 flex flex-col gap-4
+          transition-all duration-300 ease-in-out z-40
+          ${isMobileMenuOpen 
+            ? "top-[calc(100%+12px)] opacity-100 translate-y-0 pointer-events-auto visible" 
+            : "top-[100%] opacity-0 -translate-y-4 pointer-events-none invisible"
+          }
+        `}
+      >
+        <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Products</Link>
+        <Link href="/" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+        <Link href="/company" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Company Details</Link>
+        <hr className="my-2 border-slate-100" />
+        <Link href="/careers" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Careers</Link>
+        <Link href="/request-quote" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Request Quote</Link>
+        <Link href="/contact-us" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+          <button className="bg-concentra-green text-white font-bold py-3 mt-2 rounded-xl w-full shadow-md active:scale-95 transition-transform">
+            Contact Us
+          </button>
+        </Link>
+      </div>
+      
     </nav>
   );
 }

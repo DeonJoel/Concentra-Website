@@ -240,5 +240,4 @@ concentra-portal
 │  │  └─ utils.ts
 │  └─ proxy.ts
 └─ tsconfig.json
-
 ```
