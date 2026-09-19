@@ -15,13 +15,8 @@ export default function Breadcrumb() {
   const isVisible = pathNames.length > 0;
 
   return (
-    /* 
-      RESPONSIVE TOP OFFSET:
-      - top-[60px]: Assumes your mobile navbar is ~60px tall.
-      - md:top-[70px]: Assumes your desktop navbar is ~70px tall.
-      (Adjust these numbers to match your actual Navbar heights!)
-    */
-    <div className="sticky top-[60px] md:top-[70px] z-40 w-full h-0 pointer-events-none">
+    /* Adjust to top-[72px] for mobile and lg:top-[80px] for desktop. Can be changed based on navbar height */
+    <div className="sticky top-[72px] lg:top-[80px] z-40 w-full h-0 pointer-events-none">
       
       {/* Container aligned with your left grid line */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,6 +34,10 @@ export default function Breadcrumb() {
             shadow-sm border border-t-0 border-slate-200 
             transition-all duration-500 ease-in-out transform origin-top
             max-w-full overflow-x-auto scrollbar-hide
+
+            // Pushes the breadcrumb right on mobile to dodge the pill curve, resets on desktop
+            ml-4 lg:ml-0
+            
             ${isVisible ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"}
           `}
         >
