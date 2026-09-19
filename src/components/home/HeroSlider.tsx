@@ -8,7 +8,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
-// Interface for our dynamically grouped slides
 interface SlideData {
   id: number;
   image: string;
@@ -25,7 +24,6 @@ export default function HeroSlider() {
   const [slides, setSlides] = useState<SlideData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Shared gradient style to prevent the "crease" on dark images
   const smoothGradient = {
     backgroundImage: "linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,0) 100%)"
   };
@@ -38,10 +36,7 @@ export default function HeroSlider() {
         
         const data = await response.json();
         
-        // Isolate only the hero slider data
         const sliderData = data.filter((item: any) => item.section === "hero_slider");
-        
-        // Group the flat keys into distinct slide objects
         const groupedSlides: Record<number, any> = {};
         
         sliderData.forEach((item: any) => {
@@ -76,7 +71,8 @@ export default function HeroSlider() {
   };
 
   return (
-    <div className="relative w-full h-screen min-h-[600px]">
+    /* FIXED: Changed h-screen to h-[100dvh] to respect mobile browser UI and navigation bars */
+    <div className="relative w-full h-[100dvh] min-h-[600px] bg-industrial-slate">
       
       {isLoading ? (
         <div className="w-full h-full bg-stone-100 animate-pulse flex items-center justify-center">
@@ -95,40 +91,39 @@ export default function HeroSlider() {
           {slides.length > 0 ? (
             slides.map((slide) => (
               <SwiperSlide key={slide.id}>
-                <div className="relative w-full h-full flex items-center">
+                
+                <div className="relative w-full h-full flex flex-col justify-end lg:justify-center">
                   
-                  {/* Wide Background Image (Stays Fullscreen) */}
                   <div 
                     className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
                     style={{ backgroundImage: `url('${getImageUrl(slide.image)}')` }}
                   ></div>
                   
-                  {/* Smoothed Gradient Overlay (Stays Fullscreen) */}
                   <div 
-                    className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
+                    className="hidden lg:block absolute top-0 left-0 w-10/12 h-full z-10"
                     style={smoothGradient}
                   ></div>
 
-                  {/* CONTENT CONTAINER: Center-Locked Max Width */}
-                  <div className="relative z-20 w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="relative z-20 w-full max-w-7xl mx-auto lg:px-8 h-full flex flex-col justify-end lg:justify-center pointer-events-none">
                     
-                    {/* Constrained width to keep text readable (max-w-2xl/3xl) */}
-                    <div className="flex flex-col justify-center h-full max-w-2xl lg:max-w-3xl pt-[120px] lg:pt-[160px] pb-12">
+                    {/* 
+                      FIXED: Added pb-[calc(2rem+env(safe-area-inset-bottom))] 
+                      This ensures the card always pads itself above the physical home button/navigation bar!
+                    */}
+                    <div className="bg-white lg:bg-transparent w-full lg:max-w-3xl rounded-tr-[3rem] lg:rounded-none px-6 pt-10 pb-[calc(2rem+env(safe-area-inset-bottom))] lg:p-0 pointer-events-auto">
                       
                       {slide.subtitle && (
-                        <p className="text-concentra-purple text-xs md:text-sm lg:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
+                        <p className="text-concentra-purple text-xs md:text-sm lg:text-base font-bold tracking-widest uppercase mb-2 drop-shadow-sm">
                           {slide.subtitle}
                         </p>
                       )}
                       
-                      {/* Scaled Typography: 3xl (Mobile) -> 4xl (Tablet) -> 5xl (Desktop) -> 6xl (Large Screens) */}
                       {slide.title && (
                         <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
                           {slide.title}
                         </h1>
                       )}
                       
-                      {/* Scaled Description: Shrinks slightly on mobile to prevent excessive height */}
                       {slide.description && (
                         <p className="text-sm md:text-base lg:text-lg mb-8 text-industrial-slate/80 font-medium whitespace-pre-wrap">
                           {slide.description}
@@ -140,7 +135,7 @@ export default function HeroSlider() {
                         {slide.btn1_text && slide.btn1_link && (
                           <Link 
                             href={slide.btn1_link}
-                            className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
+                            className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3.5 px-8 rounded-lg transition duration-300 w-full sm:w-fit shadow-md text-sm flex items-center justify-center"
                           >
                             {slide.btn1_text}
                           </Link>
@@ -149,7 +144,7 @@ export default function HeroSlider() {
                         {slide.btn2_text && slide.btn2_link && (
                           <Link 
                             href={slide.btn2_link}
-                            className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit text-sm flex items-center justify-center"
+                            className="bg-transparent hover:bg-stone-50 border-2 border-industrial-slate text-industrial-slate font-semibold py-3.5 px-8 rounded-lg transition duration-300 w-full sm:w-fit text-sm flex items-center justify-center"
                           >
                             {slide.btn2_text}
                           </Link>
