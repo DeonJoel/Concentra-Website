@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link"; // 1. Added Link import
+import Link from "next/link"; 
 
 export default function OurExpertise() {
   const [cmsData, setCmsData] = useState<any[]>([]);
@@ -43,7 +43,6 @@ export default function OurExpertise() {
   // 2. Helper function to extract specific card data from the CMS array
   const getCardData = (num: number) => {
     const defaultTitles = ["Spindle Remanufacturing", "Component Manufacturing", "HSK Tool Clamping Sets"];
-    // 2. Added default routing based on your folder structure
     const defaultLinks = ["/services", "/services", "/products"];
     
     return {
@@ -51,7 +50,6 @@ export default function OurExpertise() {
       title: getValue(`card_${num}_title`, defaultTitles[num - 1]),
       description: getValue(`card_${num}_desc`, "Placeholder description coming from CMS. Add a text block for this card."),
       image: getValue(`card_${num}_image`, ""),
-      // 3. Extracted link value with a fallback to the default links
       link: getValue(`card_${num}_link`, defaultLinks[num - 1]) 
     };
   };
@@ -60,67 +58,62 @@ export default function OurExpertise() {
   const cards = [getCardData(1), getCardData(2), getCardData(3)];
 
   return (
-    <section className="w-full py-16 relative z-30">
+    <section className="w-full py-12 md:py-16 relative z-30">
       
-      {/* MASTER GRID: 12-Column Alignment */}
-      <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
+      {/* MASTER CONTAINER: Center-Locked Max Width */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* HEADER: Starts at Column 2, spans 10 columns */}
-        <div className="col-span-12 lg:col-start-2 lg:col-span-10 text-center mb-12">
-          <h2 className="text-concentra-purple font-bold tracking-widest text-sm md:text-base uppercase mb-2 drop-shadow-sm">
+        {/* HEADER */}
+        <div className="text-center mb-8 md:mb-10">
+          <h2 className="text-concentra-purple font-bold tracking-widest text-xs md:text-sm uppercase mb-2 drop-shadow-sm">
             {heading}
           </h2>
-          <p className="text-industrial-slate font-bold text-xl md:text-2xl">
+          {/* Reduced font size for tighter proportion */}
+          <p className="text-industrial-slate font-bold text-lg md:text-xl">
             {subHeading}
           </p>
         </div>
 
-        {/* CARDS CONTAINER */}
-        <div className="col-span-12 lg:col-start-2 lg:col-span-10">
+        {/* CARDS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           
-          {/* INNER GRID: 1 column on mobile, 3 columns on desktop */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-[32px]">
-            
-            {/* Map through our dynamically generated cards */}
-            {cards.map((item) => (
-              // 4. Converted the outer div to a Link component
-              <Link 
-                href={item.link}
-                key={item.id} 
-                className="bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 flex flex-col p-8 transition-transform duration-300 hover:-translate-y-2 cursor-pointer h-[400px] md:h-[500px] block"
-              >
-                <h3 className="text-industrial-slate font-bold text-center text-lg mb-4">
-                  {item.title}
-                </h3>
-                
-                {/* 2-3 Line Description Area */}
-                <p className="text-sm text-gray-600 text-center mb-6 line-clamp-3 leading-relaxed min-h-[60px]">
-                  {item.description}
-                </p>
-                
-                {/* Dynamic Image Area */}
-                <div className="flex-grow w-full rounded-lg overflow-hidden flex items-center justify-center bg-gray-50/50 border border-gray-100 relative">
-                  {item.image ? (
-                    <img 
-                      src={item.image.startsWith('http') ? item.image : `${process.env.NEXT_PUBLIC_API_URL}/${item.image}`} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-gray-400 text-xs text-center px-4">
-                      [ Image Placeholder ]<br/><br/>
-                      Add an image block in the CMS with key:<br/> 
-                      <span className="font-bold text-concentra-purple">card_{item.id}_image</span>
-                    </span>
-                  )}
-                </div>
+          {/* Map through our dynamically generated cards */}
+          {cards.map((item) => (
+            <Link 
+              href={item.link}
+              key={item.id} 
+              // Shrunk box height and padding for a more unified, modern look
+              className="bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 flex flex-col p-6 transition-transform duration-300 hover:-translate-y-2 cursor-pointer h-[340px] md:h-[380px] block"
+            >
+              <h3 className="text-industrial-slate font-bold text-center text-base md:text-lg mb-3">
+                {item.title}
+              </h3>
+              
+              {/* 2-3 Line Description Area */}
+              <p className="text-sm text-gray-600 text-center mb-4 line-clamp-3 leading-relaxed min-h-[60px]">
+                {item.description}
+              </p>
+              
+              {/* Dynamic Image Area */}
+              <div className="flex-grow w-full rounded-lg overflow-hidden flex items-center justify-center bg-gray-50/50 border border-gray-100 relative">
+                {item.image ? (
+                  <img 
+                    src={item.image.startsWith('http') ? item.image : `${process.env.NEXT_PUBLIC_API_URL}/${item.image}`} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-gray-400 text-xs text-center px-4">
+                    [ Image Placeholder ]<br/><br/>
+                    <span className="font-bold text-concentra-purple">card_{item.id}_image</span>
+                  </span>
+                )}
+              </div>
 
-              </Link>
-            ))}
+            </Link>
+          ))}
 
-          </div>
         </div>
-
       </div>
     </section>
   );

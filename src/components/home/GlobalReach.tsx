@@ -43,47 +43,49 @@ export default function GlobalReach() {
   const mapImage = getValue("map_image", "");
 
   return (
-    <section className="w-full py-16 relative z-30">
+    <section className="w-full py-12 md:py-16 relative z-30">
       
-      {/* 12-Column Grid Alignment */}
-      <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
+      {/* MASTER CONTAINER: Center-Locked Max Width replacing the 12-col grid */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Dark Background Card: Spans Column 2 to 11 */}
-        <div className="col-span-12 lg:col-start-2 lg:col-span-10 bg-industrial-slate rounded-[15px] shadow-2xl overflow-hidden p-6 md:p-12">
+        {/* Dark Background Card */}
+        <div className="bg-industrial-slate rounded-[15px] shadow-2xl overflow-hidden p-8 md:p-12 lg:p-16">
           
           {/* Header Section */}
-          <div className="mb-10">
-            <h2 className="text-concentra-green font-bold tracking-widest text-sm md:text-base uppercase mb-2">
+          <div className="mb-12 md:mb-16">
+            <h2 className="text-concentra-green font-bold tracking-widest text-xs md:text-sm uppercase mb-3">
               {heading}
             </h2>
-            <h3 className="text-3xl md:text-5xl font-bold leading-tight text-white">
+            {/* Constrained max-width so the title wraps nicely and remains readable */}
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white max-w-3xl">
               {subHeading}
             </h3>
           </div>
 
           {/* Content Grid: Handles Mobile Stacking vs Desktop Side-by-Side */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+          {/* Added items-center so the text box and map align perfectly in the middle */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative">
             
             {/* TEXT AREA: Left on Desktop, Bottom on Mobile */}
-            <div className="lg:col-span-5 bg-stone-200 rounded-xl p-8 md:p-10 flex flex-col justify-center order-2 lg:order-1 min-h-[300px] shadow-inner">
+            <div className="lg:col-span-5 bg-stone-100 rounded-2xl p-8 md:p-10 flex flex-col justify-center order-2 lg:order-1 shadow-lg">
               {/* whitespace-pre-wrap ensures that line breaks from your CMS text area are respected */}
-              <p className="text-industrial-slate font-medium text-lg leading-relaxed whitespace-pre-wrap">
+              <p className="text-industrial-slate font-medium text-base md:text-lg leading-relaxed whitespace-pre-wrap">
                 {description}
               </p>
             </div>
 
             {/* MAP AREA: Right on Desktop, Top on Mobile */}
-            <div className="lg:col-span-7 flex items-center justify-center order-1 lg:order-2 min-h-[300px] relative w-full">
+            <div className="lg:col-span-7 flex items-center justify-center order-1 lg:order-2 w-full">
               
               {/* DYNAMIC RENDER: Show Map Image if uploaded, otherwise show placeholder */}
               {mapImage ? (
                 <img 
                   src={mapImage.startsWith('http') ? mapImage : `${process.env.NEXT_PUBLIC_API_URL}/${mapImage}`} 
                   alt="Global Reach Map" 
-                  className="w-full h-auto max-h-[400px] object-contain"
+                  className="w-full h-auto max-h-[450px] object-contain drop-shadow-md"
                 />
               ) : (
-                <div className="w-full h-full border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center bg-white/5 p-6">
+                <div className="w-full aspect-video border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center bg-white/5 p-6">
                   <span className="text-gray-400 font-medium text-center">
                     [ Map SVG Placeholder ]
                   </span>

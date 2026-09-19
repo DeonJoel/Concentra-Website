@@ -97,66 +97,64 @@ export default function HeroSlider() {
               <SwiperSlide key={slide.id}>
                 <div className="relative w-full h-full flex items-center">
                   
-                  {/* Wide Background Image */}
+                  {/* Wide Background Image (Stays Fullscreen) */}
                   <div 
                     className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
                     style={{ backgroundImage: `url('${getImageUrl(slide.image)}')` }}
                   ></div>
                   
-                  {/* Smoothed Gradient Overlay */}
+                  {/* Smoothed Gradient Overlay (Stays Fullscreen) */}
                   <div 
                     className="absolute top-0 left-0 w-full lg:w-10/12 h-full z-10 bg-white/90 lg:bg-transparent"
                     style={smoothGradient}
                   ></div>
 
-                  {/* Content Grid */}
-                  <div className="relative z-20 w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px] h-full">
+                  {/* CONTENT CONTAINER: Center-Locked Max Width */}
+                  <div className="relative z-20 w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
-                    {/* HARD BUMPER APPLIED HERE: pt-[120px] on mobile/tablet, pt-[160px] on desktop */}
-                    <div className="col-span-12 lg:col-start-2 lg:col-span-7 flex flex-col justify-center h-full pt-[120px] lg:pt-[160px] pb-12">
+                    {/* Constrained width to keep text readable (max-w-2xl/3xl) */}
+                    <div className="flex flex-col justify-center h-full max-w-2xl lg:max-w-3xl pt-[120px] lg:pt-[160px] pb-12">
                       
-                      <div>
-                        {slide.subtitle && (
-                          <p className="text-concentra-purple text-xs md:text-sm lg:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
-                            {slide.subtitle}
-                          </p>
+                      {slide.subtitle && (
+                        <p className="text-concentra-purple text-xs md:text-sm lg:text-base font-semibold tracking-widest uppercase mb-2 drop-shadow-sm">
+                          {slide.subtitle}
+                        </p>
+                      )}
+                      
+                      {/* Scaled Typography: 3xl (Mobile) -> 4xl (Tablet) -> 5xl (Desktop) -> 6xl (Large Screens) */}
+                      {slide.title && (
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
+                          {slide.title}
+                        </h1>
+                      )}
+                      
+                      {/* Scaled Description: Shrinks slightly on mobile to prevent excessive height */}
+                      {slide.description && (
+                        <p className="text-sm md:text-base lg:text-lg mb-8 text-industrial-slate/80 font-medium whitespace-pre-wrap">
+                          {slide.description}
+                        </p>
+                      )}
+                      
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        
+                        {slide.btn1_text && slide.btn1_link && (
+                          <Link 
+                            href={slide.btn1_link}
+                            className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
+                          >
+                            {slide.btn1_text}
+                          </Link>
                         )}
                         
-                        {/* Scaled Typography: 3xl (Mobile) -> 4xl (Tablet) -> 5xl (Desktop) -> 6xl (Large Screens) */}
-                        {slide.title && (
-                          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 text-industrial-slate">
-                            {slide.title}
-                          </h1>
+                        {slide.btn2_text && slide.btn2_link && (
+                          <Link 
+                            href={slide.btn2_link}
+                            className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit text-sm flex items-center justify-center"
+                          >
+                            {slide.btn2_text}
+                          </Link>
                         )}
                         
-                        {/* Scaled Description: Shrinks slightly on mobile to prevent excessive height */}
-                        {slide.description && (
-                          <p className="text-sm md:text-base lg:text-lg mb-8 text-industrial-slate/80 font-medium max-w-xl whitespace-pre-wrap">
-                            {slide.description}
-                          </p>
-                        )}
-                        
-                        <div className="flex flex-col sm:flex-row gap-4">
-                          
-                          {slide.btn1_text && slide.btn1_link && (
-                            <Link 
-                              href={slide.btn1_link}
-                              className="bg-concentra-green hover:bg-green-600 text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit shadow-md text-sm flex items-center justify-center"
-                            >
-                              {slide.btn1_text}
-                            </Link>
-                          )}
-                          
-                          {slide.btn2_text && slide.btn2_link && (
-                            <Link 
-                              href={slide.btn2_link}
-                              className="bg-transparent hover:bg-industrial-slate border-2 border-industrial-slate text-industrial-slate hover:text-white font-semibold py-3 px-8 rounded transition duration-300 w-fit text-sm flex items-center justify-center"
-                            >
-                              {slide.btn2_text}
-                            </Link>
-                          )}
-                          
-                        </div>
                       </div>
                     </div>
                   </div>

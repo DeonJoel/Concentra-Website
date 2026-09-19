@@ -40,11 +40,11 @@ export default function TrustedBy() {
   return (
     <section className="w-full py-16 relative z-30">
       
-      {/* 12-Column Grid Alignment */}
-      <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
+      {/* MASTER CONTAINER: Center-Locked Max Width replacing the 12-col grid */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Floating Card: Spans exactly from Column 2 to Column 11 */}
-        <div className="col-span-12 lg:col-start-2 lg:col-span-10 bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] py-10 px-6 md:px-12 border border-gray-100">
+        {/* Floating Card */}
+        <div className="bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] py-10 px-6 md:px-12 border border-gray-100">
           
           <h2 className="text-center text-industrial-slate font-bold tracking-widest text-sm md:text-base uppercase mb-8">
             Trusted By Industry Leaders In Precision Machining

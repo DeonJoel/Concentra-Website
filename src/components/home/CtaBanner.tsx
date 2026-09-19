@@ -21,7 +21,8 @@ export default function CtaBanner({
 }: CtaBannerProps) {
   return (
     <section className="w-full py-16 relative z-30 mb-10">
-      <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
+      {/* MASTER CONTAINER: Center-Locked Max Width replacing the 12-col grid */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="col-span-12 lg:col-start-2 lg:col-span-10 bg-concentra-green rounded-[20px] shadow-xl p-8 py-12 md:p-14 flex flex-col lg:flex-row items-center justify-between gap-10">
           
           <div className="w-full lg:w-3/5 text-center lg:text-left">

@@ -60,11 +60,11 @@ export default function QualityCertificates() {
   return (
     <section className="w-full py-16 relative z-30">
       
-      {/* 12-Column Grid Alignment */}
-      <div className="w-full grid grid-cols-12 gap-[32px] px-6 lg:px-[80px]">
+      {/* MASTER CONTAINER: Center-Locked Max Width replacing the 12-col grid */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* The White Card: Spans Column 2 to 11 */}
-        <div className="col-span-12 lg:col-start-2 lg:col-span-10 bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 overflow-hidden flex flex-col lg:flex-row">
+        {/* The White Card */}
+        <div className="bg-white rounded-[15px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 overflow-hidden flex flex-col lg:flex-row">
           
           {/* LEFT HALF: Dynamic Main Image */}
           <div 
@@ -75,11 +75,11 @@ export default function QualityCertificates() {
           {/* RIGHT HALF: Content & Dynamic Certificates */}
           <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center items-center lg:items-center text-center">
             
-            <h2 className="text-concentra-purple font-bold tracking-widest text-sm md:text-base uppercase mb-4 drop-shadow-sm">
+            <h2 className="text-concentra-purple font-bold tracking-widest text-xs md:text-sm uppercase mb-4 drop-shadow-sm">
               {heading}
             </h2>
             
-            <h3 className="text-industrial-slate font-bold text-4xl md:text-5xl leading-tight mb-10">
+            <h3 className="text-industrial-slate font-bold text-3xl md:text-4xl lg:text-5xl leading-tight mb-8">
               {subHeading}
             </h3>
 
