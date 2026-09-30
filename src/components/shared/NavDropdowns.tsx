@@ -9,10 +9,7 @@ import { cn } from "@/lib/utils";
 const products = [
   { title: "Precision Components", href: "/products/precision-components", description: "High-accuracy parts machined to exact specifications and tolerances." },
   { title: "Spindles & Technology", href: "/products/spindles", description: "Advanced spindles for General and Special Purpose Machine (SPM) applications." },
-  { title: "Special Purpose Machines", href: "/products/special-purpose-machines", description: "Custom-engineered equipment designed for specialized manufacturing tasks." },
-  { title: "Cutting Tools", href: "/products/cutting-tools", description: "Durable and precise tools engineered for complex machining." },
   { title: "Inspection Gauges & Mandrels", href: "/products/gauges", description: "Highly reliable measurement tools for strict quality assurance." },
-  { title: "Tool Holding Systems", href: "/products/tool-holding", description: "Includes HSK Tool Clamping, Special Boring Bars, Collets, and Holders." },
 ];
 
 const services = [

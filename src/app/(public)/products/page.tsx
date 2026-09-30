@@ -14,24 +14,9 @@ const products = [
     description: "Advanced spindles for General and Special Purpose Machine (SPM) applications." 
   },
   { 
-    title: "Special Purpose Machines", 
-    href: "/products/special-purpose-machines", 
-    description: "Custom-engineered equipment designed for specialized manufacturing tasks." 
-  },
-  { 
-    title: "Cutting Tools", 
-    href: "/products/cutting-tools", 
-    description: "Durable and precise tools engineered for complex machining." 
-  },
-  { 
     title: "Inspection Gauges & Mandrels", 
     href: "/products/gauges", 
     description: "Highly reliable measurement tools for strict quality assurance." 
-  },
-  { 
-    title: "Tool Holding Systems", 
-    href: "/products/tool-holding", 
-    description: "Includes HSK Tool Clamping, Special Boring Bars, Collets, and Holders." 
   },
 ];
 
