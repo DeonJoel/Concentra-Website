@@ -23,7 +23,7 @@ const spindleVariants = [
     taper: "BT-40",
     rpm: "12,000",
     power: "15 kW",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
+    image: "https://www.setco.com/wp-content/uploads/2023/03/gear-icon-image.png.webp",
     link: "/products/spindles/machining-center/vmc-12000"
   },
   {

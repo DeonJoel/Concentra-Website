@@ -8,35 +8,35 @@ export default function SpindlesPage() {
       id: 'machining-center',
       title: 'Machining Center Series',
       desc: 'Heavy-duty spindles engineered for high material removal rates and superior rigidity in VMCs and HMCs.',
-      img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://www.setco.com/wp-content/uploads/2023/03/gear-icon-image.png.webp?q=80&w=2070&auto=format&fit=crop',
       link: '/products/spindles/machining-center'
     },
     {
       id: 'engraving-milling',
       title: 'Engraving & Milling Spindle',
       desc: 'High-speed, low-vibration motorized spindles for precision surface finishing and intricate engraving.',
-      img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://spindleexperts.com/wp-content/uploads/al_opt_content/IMAGE/spindleexperts.com/wp-content/uploads/2025/07/High-Frequency-Internal-grinding-Spindles-1024x683-1536.png.bv.webp?q=80&w=2070&auto=format&fit=crop',
       link: '/products/spindles/engraving-milling'
     },
     {
       id: 'dental-milling',
       title: 'Dental Milling Spindle',
       desc: 'Ultra-precise, compact spindles designed specifically for dental CAD/CAM milling machines and prosthetics.',
-      img: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://www.haozhihs.net/upload/20220426/20220426113312.jpg?q=80&w=2070&auto=format&fit=crop',
       link: '/products/spindles/dental-milling'
     },
     {
       id: 'robot-parts',
       title: 'Core Functional Parts of Robots',
       desc: 'High-torque joint modules and compact spindle drives built for industrial automation and robotic arms.',
-      img: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://d.veichi.com/image/index/product/rb200-r-3.jpg?q=80&w=2070&auto=format&fit=crop',
       link: '/products/spindles/robot-parts'
     },
     {
       id: 'motorized-drilling',
       title: 'Motorized Spindles for Drilling',
       desc: 'High-frequency drilling spindles offering exceptional axial stiffness for deep-hole and micro-drilling.',
-      img: 'https://images.unsplash.com/photo-1572569766952-475a892b1968?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://cpimg.tistatic.com/4599164/b/7/motorized-spindle.jpg?q=80&w=2070&auto=format&fit=crop',
       link: '/products/spindles/motorized-drilling'
     }
   ];

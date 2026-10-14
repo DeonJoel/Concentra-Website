@@ -228,24 +228,7 @@ export default function RequestQuote() {
         </div>
       </div>
 
-      {/* 
-          FLOATING AI BUTTON
-          This only renders if isAIFeatureEnabled is true.
-          It sits fixed in the bottom right corner of the screen.
-      */}
-      {isAIFeatureEnabled && (
-        <Link 
-          href="/request-quote/enquiry"
-          className="fixed bottom-8 right-8 group flex items-center justify-center bg-green-600 text-white p-4 rounded-full shadow-2xl hover:bg-green-700 hover:scale-105 transition-all duration-300 z-50 overflow-hidden"
-          title="Try Instant AI Analysis"
-        >
-          <Zap className="w-6 h-6 flex-shrink-0" />
-          <span className="font-bold max-w-0 overflow-hidden group-hover:max-w-xs group-hover:ml-3 transition-all duration-500 ease-in-out whitespace-nowrap">
-            Try AI Analysis
-          </span>
-          <Sparkles className="w-4 h-4 ml-2 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out opacity-75" />
-        </Link>
-      )}
+      
     </div>
   );
 }
