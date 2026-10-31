@@ -1,9 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: false,
-  // Added your new .94 IP address to the whitelist
-  allowedDevOrigins: ['192.168.1.82','192.168.1.81','192.168.0.5','localhost'],
+  async rewrites() {
+    return [
+      // 1. Proxy all API calls to the FastAPI backend
+      {
+        source: "/api/:path*",
+        destination: "http://127.0.0.1:8000/api/:path*", 
+      },
+      // 2. Proxy all uploaded image requests to the FastAPI backend
+      {
+        source: "/public_uploads/:path*",
+        destination: "http://127.0.0.1:8000/public_uploads/:path*", 
+      }
+    ];
+  },
 };
 
 export default nextConfig;
