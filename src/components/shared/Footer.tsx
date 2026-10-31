@@ -69,7 +69,6 @@ export default function Footer() {
               <ul className="flex flex-col gap-3 text-xs text-gray-300 font-medium">
                 <li><Link href="/request-quote" className="hover:text-concentra-green transition">Request a Quote</Link></li>
                 <li><Link href="/contact-us" className="hover:text-concentra-green transition">Contact Us</Link></li>
-                <li className="mt-4 pt-4 border-t border-white/10"><Link href="/hq-command-77x" className="hover:text-concentra-green transition text-gray-500 hover:text-gray-300">Admin Terminal</Link></li>
               </ul>
             </div>
 
