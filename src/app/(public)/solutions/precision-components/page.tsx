@@ -9,35 +9,35 @@ export default function PrecisionComponentsPage() {
       title: 'Aerospace & Defense',
       desc: 'High-tolerance, complex geometries machined from titanium and high-temp alloys for mission-critical applications.',
       img: 'https://images.unsplash.com/photo-1580983546535-375498877395?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/precision-components/aerospace'
+      link: '/solutions/precision-components/aerospace'
     },
     {
       id: 'automotive-parts',
       title: 'Automotive Components',
       desc: 'Precision-turned transmission and engine components built for high-volume scalability and exacting consistency.',
       img: 'https://images.unsplash.com/photo-1533422902779-facfac161439?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/precision-components/automotive'
+      link: '/solutions/precision-components/automotive'
     },
     {
       id: 'valves-pumps',
       title: 'Industrial Valves & Pumps',
       desc: 'Heavy-duty fluid control components requiring perfect concentricity, surface finish, and pressure ratings.',
       img: 'https://images.unsplash.com/photo-1622322384777-a8dfc8888b56?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/precision-components/valves-pumps'
+      link: '/solutions/precision-components/valves-pumps'
     },
     {
       id: 'medical-devices',
       title: 'Medical & Surgical',
       desc: 'Micro-machined components utilizing stainless steel and medical-grade plastics for sterile environments.',
       img: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/precision-components/medical'
+      link: '/solutions/precision-components/medical'
     },
     {
       id: 'custom-fixtures',
       title: 'Custom Jigs & Fixtures',
       desc: 'Purpose-built workholding and assembly fixtures engineered to streamline your internal manufacturing processes.',
       img: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/precision-components/custom-fixtures'
+      link: '/solutions/precision-components/custom-fixtures'
     }
   ];
 

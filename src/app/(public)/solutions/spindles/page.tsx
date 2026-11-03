@@ -9,35 +9,35 @@ export default function SpindlesPage() {
       title: 'Machining Center Series',
       desc: 'Heavy-duty spindles engineered for high material removal rates and superior rigidity in VMCs and HMCs.',
       img: 'https://www.setco.com/wp-content/uploads/2023/03/gear-icon-image.png.webp?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/spindles/machining-center'
+      link: '/solutions/spindles/machining-center'
     },
     {
       id: 'engraving-milling',
       title: 'Engraving & Milling Spindle',
       desc: 'High-speed, low-vibration motorized spindles for precision surface finishing and intricate engraving.',
       img: 'https://spindleexperts.com/wp-content/uploads/al_opt_content/IMAGE/spindleexperts.com/wp-content/uploads/2025/07/High-Frequency-Internal-grinding-Spindles-1024x683-1536.png.bv.webp?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/spindles/engraving-milling'
+      link: '/solutions/spindles/engraving-milling'
     },
     {
       id: 'dental-milling',
       title: 'Dental Milling Spindle',
       desc: 'Ultra-precise, compact spindles designed specifically for dental CAD/CAM milling machines and prosthetics.',
       img: 'https://www.haozhihs.net/upload/20220426/20220426113312.jpg?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/spindles/dental-milling'
+      link: '/solutions/spindles/dental-milling'
     },
     {
       id: 'robot-parts',
       title: 'Core Functional Parts of Robots',
       desc: 'High-torque joint modules and compact spindle drives built for industrial automation and robotic arms.',
       img: 'https://d.veichi.com/image/index/product/rb200-r-3.jpg?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/spindles/robot-parts'
+      link: '/solutions/spindles/robot-parts'
     },
     {
       id: 'motorized-drilling',
       title: 'Motorized Spindles for Drilling',
       desc: 'High-frequency drilling spindles offering exceptional axial stiffness for deep-hole and micro-drilling.',
       img: 'https://cpimg.tistatic.com/4599164/b/7/motorized-spindle.jpg?q=80&w=2070&auto=format&fit=crop',
-      link: '/products/spindles/motorized-drilling'
+      link: '/solutions/spindles/motorized-drilling'
     }
   ];
 

@@ -7,57 +7,68 @@ import { ChevronRight, Settings, Gauge, Zap } from "lucide-react";
 // 1. Mock Data for Sub-Categories (Purpose of Use)
 const categories = [
   "All Series",
-  "Zirconia Milling",
-  "Titanium & Wet Milling",
-  "Glass Ceramic Milling",
-  "Compact Desktop Systems"
+  "Vertical Machining (VMC)",
+  "Horizontal Machining (HMC)",
+  "5-Axis Motorized",
+  "High-Torque Roughing",
+  "High-Speed Finishing"
 ];
 
 // 2. Mock Data for the Spindle Variants
 const spindleVariants = [
   {
-    id: "dm-zr-60000",
-    name: "DM-ZR 60,000 Dry",
-    category: "Zirconia Milling",
-    taper: "Collet 4mm",
-    rpm: "60,000",
-    power: "0.5 kW",
-    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/dental-milling/dm-zr-60000"
+    id: "vmc-12000",
+    name: "VMC-12000 Direct Drive",
+    category: "Vertical Machining (VMC)",
+    taper: "BT-40",
+    rpm: "12,000",
+    power: "15 kW",
+    image: "https://www.setco.com/wp-content/uploads/2023/03/gear-icon-image.png.webp",
+    link: "/solutions/spindles/machining-center/vmc-12000"
   },
   {
-    id: "dm-ti-80000",
-    name: "DM-TI 80,000 Wet",
-    category: "Titanium & Wet Milling",
-    taper: "Collet 6mm",
-    rpm: "80,000",
-    power: "1.2 kW",
-    image: "https://images.unsplash.com/photo-1584308666744-24d5e4b1a457?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/dental-milling/dm-ti-80000"
+    id: "hmc-10000",
+    name: "HMC-10000 Belt Driven",
+    category: "Horizontal Machining (HMC)",
+    taper: "BT-50",
+    rpm: "10,000",
+    power: "22 kW",
+    image: "https://images.unsplash.com/photo-1533422902779-facfac161439?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/machining-center/hmc-10000"
   },
   {
-    id: "dm-gc-100000",
-    name: "DM-GC 100,000 Ultra",
-    category: "Glass Ceramic Milling",
-    taper: "Collet 3mm",
-    rpm: "100,000",
-    power: "0.8 kW",
-    image: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/dental-milling/dm-gc-100000"
+    id: "5x-24000",
+    name: "5X-24000 Motorized",
+    category: "5-Axis Motorized",
+    taper: "HSK-A63",
+    rpm: "24,000",
+    power: "25 kW",
+    image: "https://images.unsplash.com/photo-1622322384777-a8dfc8888b56?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/machining-center/5x-24000"
   },
   {
-    id: "dm-ds-40000",
-    name: "DM-DS 40,000 Compact",
-    category: "Compact Desktop Systems",
-    taper: "Collet 3mm",
-    rpm: "40,000",
-    power: "0.4 kW",
-    image: "https://images.unsplash.com/photo-1579567761406-4684ee0c75b6?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/dental-milling/dm-ds-40000"
+    id: "ht-8000",
+    name: "HT-8000 Heavy Duty",
+    category: "High-Torque Roughing",
+    taper: "SK-50",
+    rpm: "8,000",
+    power: "30 kW",
+    image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/machining-center/ht-8000"
+  },
+  {
+    id: "hs-36000",
+    name: "HS-36000 Precision",
+    category: "High-Speed Finishing",
+    taper: "HSK-E40",
+    rpm: "36,000",
+    power: "12 kW",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/machining-center/hs-36000"
   }
 ];
 
-export default function DentalMillingPage() {
+export default function MachiningCenterPage() {
   const [activeCategory, setActiveCategory] = useState("All Series");
 
   // Filter logic based on active selection
@@ -77,10 +88,10 @@ export default function DentalMillingPage() {
               <ChevronRight className="w-4 h-4 rotate-180" /> Back to Spindles
             </Link>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Dental Milling Spindles
+              Machining Center Series
             </h1>
             <p className="text-slate-300 text-sm md:text-base leading-relaxed">
-              Ultra-precise, low-vibration motorized spindles engineered exclusively for dental CAD/CAM systems. Optimized for milling zirconia, titanium, and glass ceramics with sub-micron accuracy.
+              Heavy-duty, highly rigid spindle solutions designed to maximize material removal rates and surface finish quality across VMC, HMC, and 5-Axis applications.
             </p>
           </div>
         </div>
@@ -99,7 +110,7 @@ export default function DentalMillingPage() {
             <div className="lg:sticky lg:top-[120px]">
               
               <h3 className="hidden lg:block text-lg font-bold text-industrial-slate mb-4 pb-4 border-b border-gray-200">
-                Filter by Material / System
+                Filter by Purpose
               </h3>
 
               {/* MOBILE: Horizontal Scrollable Pills */}
@@ -147,7 +158,7 @@ export default function DentalMillingPage() {
             
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-bold text-industrial-slate">
-                {activeCategory === "All Series" ? "All Dental Spindles" : activeCategory}
+                {activeCategory === "All Series" ? "All Machining Spindles" : activeCategory}
               </h2>
               <span className="text-sm font-medium text-slate-400 bg-white px-3 py-1 rounded-full border border-gray-100 shadow-sm">
                 {filteredProducts.length} Results

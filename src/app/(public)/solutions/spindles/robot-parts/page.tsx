@@ -23,7 +23,7 @@ const roboticVariants = [
     speed: "40,000 RPM",
     output: "3.0 kW",
     image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/robot-parts/rs-40k"
+    link: "/solutions/spindles/robot-parts/rs-40k"
   },
   {
     id: "jm-120",
@@ -33,7 +33,7 @@ const roboticVariants = [
     speed: "45 RPM",
     output: "120 Nm",
     image: "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/robot-parts/jm-120"
+    link: "/solutions/spindles/robot-parts/jm-120"
   },
   {
     id: "hd-flex",
@@ -43,7 +43,7 @@ const roboticVariants = [
     speed: "60 RPM",
     output: "80 Nm",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/robot-parts/hd-flex"
+    link: "/solutions/spindles/robot-parts/hd-flex"
   },
   {
     id: "eoa-atc",
@@ -53,7 +53,7 @@ const roboticVariants = [
     speed: "0.5s Change",
     output: "24V DC",
     image: "https://images.unsplash.com/photo-1563207153-f408bf411696?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/robot-parts/eoa-atc"
+    link: "/solutions/spindles/robot-parts/eoa-atc"
   }
 ];
 
@@ -72,7 +72,7 @@ export default function RobotPartsPage() {
       <section className="w-full bg-industrial-slate pt-[140px] lg:pt-[100px] pb-12 lg:pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <Link href="/products/spindles" className="text-concentra-green hover:text-white transition-colors text-sm font-semibold flex items-center gap-1 mb-4 w-fit">
+            <Link href="/solutions/spindles" className="text-concentra-green hover:text-white transition-colors text-sm font-semibold flex items-center gap-1 mb-4 w-fit">
               <ChevronRight className="w-4 h-4 rotate-180" /> Back to Spindles
             </Link>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">

@@ -7,68 +7,57 @@ import { ChevronRight, Settings, Gauge, Zap } from "lucide-react";
 // 1. Mock Data for Sub-Categories (Purpose of Use)
 const categories = [
   "All Series",
-  "Vertical Machining (VMC)",
-  "Horizontal Machining (HMC)",
-  "5-Axis Motorized",
-  "High-Torque Roughing",
-  "High-Speed Finishing"
+  "High-Speed Engraving",
+  "PCB Routing",
+  "Glass & Ceramic Milling",
+  "Wood & Plastic Routing"
 ];
 
 // 2. Mock Data for the Spindle Variants
 const spindleVariants = [
   {
-    id: "vmc-12000",
-    name: "VMC-12000 Direct Drive",
-    category: "Vertical Machining (VMC)",
-    taper: "BT-40",
-    rpm: "12,000",
-    power: "15 kW",
-    image: "https://www.setco.com/wp-content/uploads/2023/03/gear-icon-image.png.webp",
-    link: "/products/spindles/machining-center/vmc-12000"
-  },
-  {
-    id: "hmc-10000",
-    name: "HMC-10000 Belt Driven",
-    category: "Horizontal Machining (HMC)",
-    taper: "BT-50",
-    rpm: "10,000",
-    power: "22 kW",
-    image: "https://images.unsplash.com/photo-1533422902779-facfac161439?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/machining-center/hmc-10000"
-  },
-  {
-    id: "5x-24000",
-    name: "5X-24000 Motorized",
-    category: "5-Axis Motorized",
-    taper: "HSK-A63",
-    rpm: "24,000",
-    power: "25 kW",
-    image: "https://images.unsplash.com/photo-1622322384777-a8dfc8888b56?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/machining-center/5x-24000"
-  },
-  {
-    id: "ht-8000",
-    name: "HT-8000 Heavy Duty",
-    category: "High-Torque Roughing",
-    taper: "SK-50",
-    rpm: "8,000",
-    power: "30 kW",
-    image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/machining-center/ht-8000"
-  },
-  {
-    id: "hs-36000",
-    name: "HS-36000 Precision",
-    category: "High-Speed Finishing",
-    taper: "HSK-E40",
-    rpm: "36,000",
-    power: "12 kW",
+    id: "em-60000",
+    name: "EM-60000 Ultra-Speed",
+    category: "High-Speed Engraving",
+    taper: "ISO-20",
+    rpm: "60,000",
+    power: "1.8 kW",
     image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop",
-    link: "/products/spindles/machining-center/hs-36000"
+    link: "/solutions/spindles/engraving-milling/em-60000"
+  },
+  {
+    id: "pcb-80000",
+    name: "PCB-80000 Micro-Router",
+    category: "PCB Routing",
+    taper: "Collet ER8",
+    rpm: "80,000",
+    power: "0.8 kW",
+    image: "https://images.unsplash.com/photo-1580983546535-375498877395?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/engraving-milling/pcb-80000"
+  },
+  {
+    id: "gc-40000",
+    name: "GC-40000 Wet Milling",
+    category: "Glass & Ceramic Milling",
+    taper: "HSK-E25",
+    rpm: "40,000",
+    power: "3.2 kW",
+    image: "https://images.unsplash.com/photo-1572569766952-475a892b1968?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/engraving-milling/gc-40000"
+  },
+  {
+    id: "wp-24000",
+    name: "WP-24000 ATC Router",
+    category: "Wood & Plastic Routing",
+    taper: "ISO-30",
+    rpm: "24,000",
+    power: "9.0 kW",
+    image: "https://images.unsplash.com/photo-1563720224424-df3d85507746?q=80&w=2070&auto=format&fit=crop",
+    link: "/solutions/spindles/engraving-milling/wp-24000"
   }
 ];
 
-export default function MachiningCenterPage() {
+export default function EngravingMillingPage() {
   const [activeCategory, setActiveCategory] = useState("All Series");
 
   // Filter logic based on active selection
@@ -88,10 +77,10 @@ export default function MachiningCenterPage() {
               <ChevronRight className="w-4 h-4 rotate-180" /> Back to Spindles
             </Link>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Machining Center Series
+              Engraving & Milling Series
             </h1>
             <p className="text-slate-300 text-sm md:text-base leading-relaxed">
-              Heavy-duty, highly rigid spindle solutions designed to maximize material removal rates and surface finish quality across VMC, HMC, and 5-Axis applications.
+              High-speed, low-vibration motorized spindles designed for precision surface finishing, intricate engraving, and specialized routing applications across multiple materials.
             </p>
           </div>
         </div>
@@ -158,7 +147,7 @@ export default function MachiningCenterPage() {
             
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-bold text-industrial-slate">
-                {activeCategory === "All Series" ? "All Machining Spindles" : activeCategory}
+                {activeCategory === "All Series" ? "All Engraving & Milling Spindles" : activeCategory}
               </h2>
               <span className="text-sm font-medium text-slate-400 bg-white px-3 py-1 rounded-full border border-gray-100 shadow-sm">
                 {filteredProducts.length} Results

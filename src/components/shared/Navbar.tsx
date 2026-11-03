@@ -144,7 +144,7 @@ export default function Navbar() {
             ${isMobileMenuOpen ? "top-[calc(100%+12px)] opacity-100 translate-y-0 pointer-events-auto visible" : "top-[100%] opacity-0 -translate-y-4 pointer-events-none invisible"}
           `}
         >
-          <Link href="/products" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Products</Link>
+          <Link href="/solutions" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Solutions</Link>
           <Link href="/services" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
           <Link href="/company" className="text-industrial-slate font-semibold hover:text-concentra-purple" onClick={() => setIsMobileMenuOpen(false)}>Company Details</Link>
           <hr className="my-2 border-slate-100" />
