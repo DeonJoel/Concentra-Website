@@ -1,4 +1,5 @@
 import HeroSlider from "@/components/home/HeroSlider";
+import CompanyIntro from "@/components/home/CompanyIntro";
 import TrustedBy from "@/components/home/TrustedBy";
 import OurExpertise from "@/components/home/OurExpertise";
 import QualityCertificates from "@/components/home/QualityCertificates";
@@ -10,20 +11,23 @@ export default function Home() {
     <main className="min-h-screen">
       {/* 1. Hero Slider Section */}
       <HeroSlider />
+
+      {/* 2. The Company Intro Section */}
+      <CompanyIntro />
       
-      {/* 2. The Trusted By Banner */}
+      {/* 3. The Trusted By Banner */}
       <TrustedBy />
 
-      {/* 3. Expertise Bento Box Grid */}
+      {/* 4. Expertise Bento Box Grid */}
       <OurExpertise />
 
-      {/* 4. Quality Certificates Section */}
+      {/* 5. Quality Certificates Section */}
       <QualityCertificates />
 
-      {/* 5. Global Reach Section */}
+      {/* 6. Global Reach Section */}
       <GlobalReach />
 
-      {/* 6. CTA Banner Section */}
+      {/* 7. CTA Banner Section */}
       <CtaBanner />
     </main>
   );
