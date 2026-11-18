@@ -15,7 +15,7 @@ const componentVariants = [
     material: "Cast Iron FC300",
     tolerance: "±0.005 mm",
     certification: "ISO 9001",
-    image: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?q=80&w=2070&auto=format&fit=crop",
+    image: "https://www.homge.com.tw/images/444122?stamp=1777634900?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   },
   {
@@ -25,7 +25,7 @@ const componentVariants = [
     material: "Aluminum / Tool Steel",
     tolerance: "±0.001 mm",
     certification: "ISO 9001",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop",
+    image: "https://5.imimg.com/data5/HF/GN/LU/SELLER-13597147/cmm-inspection-fixture-500x500.jpg?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   }
 ];

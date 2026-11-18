@@ -8,21 +8,21 @@ export default function PrecisionComponentsPage() {
       id: 'aerospace-defense',
       title: 'Aerospace & Defense',
       desc: 'High-tolerance, complex geometries machined from titanium and high-temp alloys for mission-critical applications.',
-      img: 'https://images.unsplash.com/photo-1580983546535-375498877395?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://cdn.britannica.com/29/220029-050-32C7BEB2/airplane-assembly-North-Charleston-South-Carolina-2013.jpg?q=80&w=2070&auto=format&fit=crop',
       link: '/solutions/precision-components/aerospace'
     },
     {
       id: 'automotive-parts',
       title: 'Automotive Components',
       desc: 'Precision-turned transmission and engine components built for high-volume scalability and exacting consistency.',
-      img: 'https://images.unsplash.com/photo-1533422902779-facfac161439?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://www.keyence.com/Images/ss_sealing_p_automotive-parts_001_1791826.png?q=80&w=2070&auto=format&fit=crop',
       link: '/solutions/precision-components/automotive'
     },
     {
       id: 'valves-pumps',
       title: 'Industrial Valves & Pumps',
       desc: 'Heavy-duty fluid control components requiring perfect concentricity, surface finish, and pressure ratings.',
-      img: 'https://images.unsplash.com/photo-1622322384777-a8dfc8888b56?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT79kgaKwoLVNMgEcRW0Cj8ZAhW-6MBD5FtrDrYmr4ASO5J48alu8S96sXF&s=10?q=80&w=2070&auto=format&fit=crop',
       link: '/solutions/precision-components/valves-pumps'
     },
     {
@@ -36,7 +36,7 @@ export default function PrecisionComponentsPage() {
       id: 'custom-fixtures',
       title: 'Custom Jigs & Fixtures',
       desc: 'Purpose-built workholding and assembly fixtures engineered to streamline your internal manufacturing processes.',
-      img: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?q=80&w=2070&auto=format&fit=crop',
+      img: 'https://gatecorpus.com/assets/images/tools-jigs-and-fixtures.webp?q=80&w=2070&auto=format&fit=crop',
       link: '/solutions/precision-components/custom-fixtures'
     }
   ];
@@ -49,7 +49,7 @@ export default function PrecisionComponentsPage() {
         {/* Background Image */}
         <div 
           className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=2070&auto=format&fit=crop')" }}
+          style={{ backgroundImage: "url('https://avantiengineering.com/wp-content/uploads/2021/10/MFGDay-25-1080x675.jpg?q=80&w=2070&auto=format&fit=crop')" }}
         ></div>
         
         {/* Desktop Gradient Overlay */}

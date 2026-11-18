@@ -15,7 +15,7 @@ const componentVariants = [
     material: "Stainless Steel 316L",
     tolerance: "±0.015 mm",
     certification: "API 6D",
-    image: "https://images.unsplash.com/photo-1622322384777-a8dfc8888b56?q=80&w=2070&auto=format&fit=crop",
+    image: "https://5.imimg.com/data5/SR/ST/LO/SELLER-99171425/centrifugal-impeller.jpg?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   },
   {
@@ -25,7 +25,7 @@ const componentVariants = [
     material: "Carbon Steel WCB",
     tolerance: "±0.020 mm",
     certification: "ASME B16.34",
-    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop",
+    image: "https://5.imimg.com/data5/SELLER/Default/2023/5/308125677/JJ/HK/BE/151623809/forging-valve-body-500x500.jpg?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   }
 ];

@@ -49,7 +49,7 @@ export default function SpindlesPage() {
         {/* Background Image */}
         <div 
           className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1613588718956-c2e80382bf27?q=80&w=2070&auto=format&fit=crop')" }}
+          style={{ backgroundImage: "url('https://www.microdynamicsfa.com/images/articles/cnc-spindle-types/0b5e89_a6bfd40537864f129d8d126fe39ae03e_mv2.webp?q=80&w=2070&auto=format&fit=crop')" }}
         ></div>
         
         {/* Desktop Gradient Overlay */}

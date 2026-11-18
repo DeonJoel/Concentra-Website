@@ -21,7 +21,7 @@ const componentVariants = [
     material: "Inconel 718",
     tolerance: "±0.002 mm",
     certification: "AS9100D",
-    image: "https://images.unsplash.com/photo-1580983546535-375498877395?q=80&w=2070&auto=format&fit=crop",
+    image: "https://tirapid.com/wp-content/uploads/2026/10/aero-turbine-blade-precision-sample-for-industry-exhibition.webp?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   },
   {

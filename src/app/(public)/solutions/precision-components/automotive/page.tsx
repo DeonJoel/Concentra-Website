@@ -15,7 +15,7 @@ const componentVariants = [
     material: "Alloy Steel 8620",
     tolerance: "±0.005 mm",
     certification: "IATF 16949",
-    image: "https://images.unsplash.com/photo-1533422902779-facfac161439?q=80&w=2070&auto=format&fit=crop",
+    image: "https://lotusvario.com/assets/images/helical-gear-shaft/2.jpeg?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   },
   {
@@ -25,7 +25,7 @@ const componentVariants = [
     material: "Aluminum 6061",
     tolerance: "±0.010 mm",
     certification: "ISO 9001",
-    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2070&auto=format&fit=crop",
+    image: "https://cdn.streetmachine.com.au/2023/07/billet-block-1-scaled.jpg?q=80&w=2070&auto=format&fit=crop",
     link: "/request-quote"
   }
 ];
