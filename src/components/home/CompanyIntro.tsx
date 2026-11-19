@@ -1,93 +1,135 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Target, ShieldCheck, Factory } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 export default function CompanyIntro() {
   return (
-    <section className="w-full py-16 md:py-24 bg-white relative z-20">
+    <section className="w-full  relative z-20">
       
-      {/* MASTER CONTAINER: Center-Locked Max Width */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* --- TOP SECTION: Intro Grid --- */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         
-        {/* Responsive Grid: Image on left, text on right for desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        {/* Responsive Grid: Image on left, text on right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-[85px] items-center">
           
-          {/* Left Column: Factory Image */}
-          <div className="relative h-[350px] md:h-[450px] lg:h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-100 group">
-            {/* The provided factory image */}
-            <img
-              src="/banner1.jpg"
-              alt="Concentra Factory Facility"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            {/* Floating Info Badge over the image */}
-            <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-5 py-3 rounded-2xl shadow-xl border border-white/20 flex items-center gap-3">
-               <div className="w-10 h-10 bg-[#F8EBFF] rounded-xl flex items-center justify-center shrink-0">
-                 <Factory className="w-5 h-5 text-concentra-purple" />
-               </div>
-               <span className="text-sm font-bold text-industrial-slate leading-tight">
-                 State-of-the-Art <br /> <span className="font-medium text-slate-500 text-xs">Manufacturing Plant</span>
+          {/* Left Column: Factory Image & Floating Note */}
+          <div className="relative w-full group">
+            {/* Image Container */}
+            <div className="h-[350px] md:h-[470px] w-full overflow-hidden">
+              <img
+                src="/banner1.jpg"
+                alt="Concentra manufacturing facility"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+            
+            {/* Floating Note Badge */}
+            <div className="absolute -bottom-[28px] -right-[10px] md:-right-[25px] bg-concentra-purple text-white px-[27px] py-[22px] flex items-center gap-[15px] shadow-xl z-10">
+               <strong className="text-[38px] font-extrabold leading-none tracking-tight">
+                 1995
+               </strong>
+               <span className="text-[11px] leading-[1.5] font-medium">
+                 The year our<br />journey began.
                </span>
             </div>
           </div>
 
-          {/* Right Column: Extended Company Narrative & Badges */}
-          <div className="flex flex-col justify-center">
-            <p className="text-concentra-purple font-bold tracking-widest text-xs md:text-sm uppercase mb-4 drop-shadow-sm">
-              Welcome to Concentra
-            </p>
+          {/* Right Column: Copy & Checklist */}
+          <div className="flex flex-col justify-center mt-12 lg:mt-0">
             
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-industrial-slate leading-tight mb-6">
-              Driving Industrial Innovation Through Precision Manufacturing.
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 text-concentra-purple text-[11px] font-extrabold tracking-[2px] uppercase mb-5">
+              <span className="w-[27px] h-[2px] bg-concentra-green inline-block"></span>
+              WHO WE ARE
+            </div>
+            
+            {/* Main Headline */}
+            <h2 className="text-[clamp(31px,3.4vw,45px)] leading-[1.23] font-extrabold text-industrial-slate mb-[22px] tracking-[-1px]">
+              Built on expertise.<br />
+              <em className="text-concentra-purple not-italic">Driven by precision.</em>
             </h2>
             
-            <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-4 font-medium">
-              Concentra is a premier engineering facility specialising in the design, manufacturing, and re-manufacturing of high-performance spindles and precision-machined components. 
+            {/* Lead Paragraph */}
+            <p className="text-[17px] font-bold leading-[1.65] text-industrial-slate mb-4">
+              Engineering excellence isn't a claim. It's a commitment reflected in every component we manufacture.
             </p>
             
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
-              Equipped with state-of-the-art CNC technology and backed by decades of metallurgical expertise, we partner with industry leaders to deliver robust, scalable, and exacting solutions that keep global production lines moving with absolute reliability.
-            </p>
-
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-8">
-              Our expansive, modern manufacturing plant houses advanced multi-axis machining centers, climate-controlled inspection labs, and dedicated assembly zones. By maintaining strict in-house control over the entire production lifecycle, we guarantee uncompromising quality from raw material selection to final delivery.
+            {/* Secondary Paragraph */}
+            <p className="text-[14px] leading-[1.9] text-[#716b77] mb-6">
+              Established in 1995 in Bengaluru, Concentra Precision Technologies Pvt. Ltd. manufactures complex, high-precision components and assemblies. Our skilled engineers and machinists are supported by comprehensive in-house machining capabilities and dedicated metrology equipment.
             </p>
             
-            {/* Quick Trust Badges */}
-            <div className="flex flex-wrap gap-4 md:gap-6 mb-10">
-              <div className="flex items-center gap-3 bg-slate-50 px-5 py-3.5 rounded-2xl border border-slate-100">
-                <div className="w-12 h-12 bg-[#e6f4ea] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                  <ShieldCheck className="w-6 h-6 text-concentra-green" />
-                </div>
-                <span className="text-sm font-bold text-slate-700 leading-tight">
-                  ISO 9001:2015 <br /> <span className="font-medium text-slate-500 text-xs">Certified Facility</span>
-                </span>
-              </div>
-              
-              <div className="flex items-center gap-3 bg-slate-50 px-5 py-3.5 rounded-2xl border border-slate-100">
-                <div className="w-12 h-12 bg-[#F8EBFF] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                  <Target className="w-6 h-6 text-concentra-purple" />
-                </div>
-                <span className="text-sm font-bold text-slate-700 leading-tight">
-                  Sub-Micron <br /> <span className="font-medium text-slate-500 text-xs">Machining Accuracy</span>
-                </span>
-              </div>
+            {/* Check Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-[17px] my-[26px]">
+              <span className="flex items-center gap-2 text-[12px] font-bold text-industrial-slate">
+                <Check className="w-4 h-4 text-concentra-green shrink-0 stroke-[3]" /> Integrated machining facilities
+              </span>
+              <span className="flex items-center gap-2 text-[12px] font-bold text-industrial-slate">
+                <Check className="w-4 h-4 text-concentra-green shrink-0 stroke-[3]" /> Skilled engineering workforce
+              </span>
+              <span className="flex items-center gap-2 text-[12px] font-bold text-industrial-slate">
+                <Check className="w-4 h-4 text-concentra-green shrink-0 stroke-[3]" /> Precision measurement & inspection
+              </span>
+              <span className="flex items-center gap-2 text-[12px] font-bold text-industrial-slate">
+                <Check className="w-4 h-4 text-concentra-green shrink-0 stroke-[3]" /> Complex component expertise
+              </span>
             </div>
 
-            {/* Elegant text link with hover animation */}
+            {/* Link */}
             <Link 
               href="/company/about"
-              className="inline-flex items-center gap-2 text-concentra-green font-bold hover:text-green-700 transition-colors group w-fit text-sm md:text-base"
+              className="inline-flex items-center gap-1.5 text-concentra-purple font-extrabold text-[13px] border-b border-concentra-purple pb-[7px] w-fit hover:text-[#70376c] hover:border-[#70376c] transition-colors"
             >
-              <span className="border-b-2 border-transparent group-hover:border-concentra-green transition-colors pb-0.5">
-                Discover Our History & Facility
-              </span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+              Discover our capabilities <span className="text-[15px] leading-none">↗</span>
             </Link>
+
+          </div>
+        </div>
+      </div>
+
+      {/* --- BOTTOM SECTION: Numbers Strip --- */}
+      <div className="w-full bg-[#2a1731] py-[42px] text-white">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-4">
+            
+            {/* Stat 1 */}
+            <div className="md:border-r md:border-white/15 px-2 md:pl-0 md:pr-[35px]">
+              <strong className="block text-[34px] font-extrabold leading-none mb-1">
+                1995
+              </strong>
+              <span className="text-[11px] text-[#d5cbd6]">Established</span>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="md:border-r md:border-white/15 px-2 md:px-[35px]">
+              <strong className="block text-[34px] font-extrabold leading-none mb-1">
+                86,000<span className="text-[14px] font-normal"> sq. ft.</span>
+              </strong>
+              <span className="text-[11px] text-[#d5cbd6]">Facility land area</span>
+            </div>
+
+            {/* Stat 3 */}
+            <div className="md:border-r md:border-white/15 px-2 md:px-[35px]">
+              <strong className="block text-[34px] font-extrabold leading-none mb-1">
+                35,000<span className="text-[14px] font-normal"> sq. ft.</span>
+              </strong>
+              <span className="text-[11px] text-[#d5cbd6]">Shop floor</span>
+            </div>
+
+            {/* Stat 4 */}
+            <div className="px-2 md:pl-[35px] md:border-0">
+              <strong className="block text-[34px] font-extrabold leading-none mb-1">
+                3
+              </strong>
+              <span className="text-[11px] text-[#d5cbd6]">Dedicated manufacturing shops</span>
+            </div>
+
           </div>
 
         </div>
       </div>
+      
     </section>
   );
 }

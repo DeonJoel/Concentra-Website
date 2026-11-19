@@ -4,7 +4,7 @@ import TrustedBy from "@/components/home/TrustedBy";
 import OurExpertise from "@/components/home/OurExpertise";
 import QualityCertificates from "@/components/home/QualityCertificates";
 import GlobalReach from "@/components/home/GlobalReach";
-import CtaBanner from "@/components/home/CtaBanner";
+import ProcessBanner from "@/components/home/ProcessBanner";
 
 export default function Home() {
   return (
@@ -12,23 +12,24 @@ export default function Home() {
       {/* 1. Hero Slider Section */}
       <HeroSlider />
 
-      {/* 2. The Company Intro Section */}
-      <CompanyIntro />
-      
-      {/* 3. The Trusted By Banner */}
+      {/* 2. The Trusted By Banner */}
       <TrustedBy />
+
+      {/* 3. The Company Intro Section */}
+      <CompanyIntro />
 
       {/* 4. Expertise Bento Box Grid */}
       <OurExpertise />
 
       {/* 5. Quality Certificates Section */}
       <QualityCertificates />
+      
+      {/* 6. Process Banner Section */}
+      <ProcessBanner />
 
-      {/* 6. Global Reach Section */}
+      {/* 7. Global Reach Section */}
       <GlobalReach />
-
-      {/* 7. CTA Banner Section */}
-      <CtaBanner />
+      
     </main>
   );
 }
