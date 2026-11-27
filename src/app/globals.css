@@ -1,41 +1,45 @@
 @import "tailwindcss";
 
-/* 1. Default Light Mode Variables */
+/* 1. Architectural Precision Light Mode Variables */
 :root {
-  --background: #F8EBFF; 
-  --foreground: #1E293B; 
+  --background: #f8f7f9;
+  --foreground: #22202a;
 }
 
-/* 2. Tell Tailwind V4 about your custom setup */
+/* 2. Tailwind v4 Theme Tokens */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  /* Typography: DM Sans for body, Manrope for display headings */
+  --font-sans: var(--font-dm-sans), sans-serif;
+  --font-display: var(--font-manrope), sans-serif;
 
-  /* Your Concentra Brand Colors */
+  /* Concentra Brand & Architectural Palette */
   --color-concentra-purple: #7A2B6B;
+  --color-concentra-deep: #2a1731;
   --color-concentra-green: #2A9D40;
-  --color-industrial-slate: #1E293B;
-  --color-blueprint-bg: #F8EBFF;
+  --color-concentra-lime: #78c565;
+  --color-industrial-slate: #22202a;
+  --color-ink-muted: #716b77;
+  --color-surface-muted: #f8f7f9;
+  --color-border-subtle: #e8e4e9;
 }
 
-/* 3. Future Dark Mode Variables */
-.dark {
-  --background: #0f172a; 
-  --foreground: #F8EBFF; 
+/* 3. Base Document Rules */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 85px;
 }
 
-/* 4. Global Body Properties */
 body {
   background-color: var(--background);
-  
-  /* GLOBAL STICKY BLUEPRINT SETUP */
-  background-image: url('/.blueprint-placeholder.png'); /* Drop your asset in the 'public' folder with this name */
-  background-attachment: fixed; /* This makes the blueprint "sticky" so content glides smoothly over it */
-  background-position: center;
-  background-size: cover; /* Stretches safely across large screens without distortion */
-  
   color: var(--foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Automatically apply Manrope to all headings for crisp engineering geometry */
+h1, h2, h3, h4, strong {
+  font-family: var(--font-display);
 }

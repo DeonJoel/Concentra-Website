@@ -1,103 +1,151 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 
 export default function Breadcrumb() {
-  const paths = usePathname();
-  
-  // Split the URL and remove empty strings
-  const pathNames = paths.split("/").filter((path) => path);
-
-  // We determine visibility based on whether we are on the homepage or not
+  const pathname = usePathname();
+  const pathNames = pathname.split("/").filter((path) => path);
   const isVisible = pathNames.length > 0;
 
-  return (
-    /* Adjust to top-[72px] for mobile and lg:top-[80px] for desktop. Can be changed based on navbar height */
-    <div className="sticky top-[72px] lg:top-[80px] z-40 w-full h-0 pointer-events-none">
-      
-      {/* Container aligned with your left grid line */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* 
-          MOBILE PADDING & OVERFLOW:
-          - max-w-full & overflow-x-auto: Prevents it from breaking the screen on tiny phones.
-          - px-3 py-2 sm:px-5 sm:py-2.5: Smaller padding on mobile, standard on desktop.
-          - no-scrollbar: Hides the ugly scrollbar while keeping swipe functionality.
-        */}
-        <nav 
-          aria-label="breadcrumb" 
-          className={`
-            inline-flex items-center bg-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-b-[10px] 
-            shadow-sm border border-t-0 border-slate-200 
-            transition-all duration-500 ease-in-out transform origin-top
-            max-w-full overflow-x-auto scrollbar-hide
+  // All intermediate segments between Home and the final (current) segment
+  const middleSegments = pathNames.slice(0, -1);
+  const lastSegment = pathNames[pathNames.length - 1];
 
-            // Pushes the breadcrumb right on mobile to dodge the pill curve, resets on desktop
-            ml-4 lg:ml-0
-            
-            ${isVisible ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"}
+  // Tracks which intermediate segment is currently expanded.
+  // Defaults to the immediate parent of the current page (middleSegments.length - 1).
+  const [focusedMiddleIndex, setFocusedMiddleIndex] = useState<number>(0);
+
+  // Reset to show the immediate parent whenever the URL changes
+  useEffect(() => {
+    setFocusedMiddleIndex(Math.max(0, pathNames.length - 2));
+  }, [pathname, pathNames.length]);
+
+  const formatTitle = (slug: string) => slug.replace(/-/g, " ");
+
+  // Ensure index stays safely bounded during route transitions
+  const safeIndex = Math.min(
+    Math.max(0, focusedMiddleIndex),
+    Math.max(0, middleSegments.length - 1)
+  );
+
+  const hasCollapsedLeft = middleSegments.length > 1 && safeIndex > 0;
+  const hasCollapsedRight =
+    middleSegments.length > 1 && safeIndex < middleSegments.length - 1;
+
+  const activeMiddleSlug = middleSegments[safeIndex];
+  const activeMiddleHref = `/${pathNames.slice(0, safeIndex + 1).join("/")}`;
+
+  // Build helpful hover tooltips showing what lies inside each "..."
+  const leftHiddenLabel = middleSegments
+    .slice(0, safeIndex)
+    .map(formatTitle)
+    .join(" / ");
+  const rightHiddenLabel = middleSegments
+    .slice(safeIndex + 1)
+    .map(formatTitle)
+    .join(" / ");
+
+  return (
+    <div className="sticky top-[68px] lg:top-[80px] z-40 w-full h-0 pointer-events-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav
+          aria-label="breadcrumb"
+          className={`
+            inline-flex items-center bg-white/95 backdrop-blur-sm px-3.5 py-2 sm:px-4 sm:py-2
+            border border-t-0 border-x border-b border-[#2a1731]/20 shadow-[0_8px_24px_rgba(33,22,39,0.08)]
+            transition-all duration-300 ease-out transform origin-top
+            max-w-full overflow-x-auto no-scrollbar
+            ${
+              isVisible
+                ? "translate-y-0 opacity-100 pointer-events-auto"
+                : "-translate-y-full opacity-0 pointer-events-none"
+            }
           `}
         >
-          {/* 
-            MOBILE TEXT SIZING:
-            - text-xs sm:text-sm: Smaller text on phones.
-            - whitespace-nowrap: Forces the breadcrumb to stay on a single line.
-          */}
-          <ol className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-slate-500 font-medium whitespace-nowrap">
-            
-            {/* 1. Home Link */}
+          <ol className="flex items-center space-x-1.5 sm:space-x-2 text-[11px] font-bold tracking-[0.4px] uppercase text-ink-muted whitespace-nowrap">
+            {/* 1. ALWAYS EXPANDED: Home */}
             <li>
-              <Link href="/" className="hover:text-concentra-green transition-colors">
+              <Link
+                href="/"
+                className="hover:text-concentra-purple transition-colors"
+              >
                 Home
               </Link>
             </li>
 
-            {/* 2. The Collapsed State (The "...") */}
-            {pathNames.length > 2 && (
+            {/* 2. LEFT COLLAPSED BUTTON ("...") — Expands earlier parent segments */}
+            {hasCollapsedLeft && (
               <>
-                <li className="text-slate-400">
-                  <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                <li aria-hidden="true">
+                  <ChevronRight className="w-3.5 h-3.5 text-ink-muted/60" />
                 </li>
                 <li>
-                  <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-md hover:bg-slate-100 cursor-default text-slate-400">
-                    <MoreHorizontal className="w-3 h-3 sm:w-4 sm:h-4" />
-                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setFocusedMiddleIndex(safeIndex - 1)}
+                    title={`Show ${leftHiddenLabel}`}
+                    aria-label={`Expand ${leftHiddenLabel}`}
+                    className="flex items-center justify-center px-1.5 py-0.5 bg-surface-muted hover:bg-concentra-purple hover:text-white border border-border-subtle text-industrial-slate transition-colors cursor-pointer"
+                  >
+                    <MoreHorizontal className="w-3.5 h-3.5" />
+                  </button>
                 </li>
               </>
             )}
 
-            {/* 3. The Dynamic Path Links */}
-            {pathNames.map((link, index) => {
-              if (pathNames.length > 2 && index < pathNames.length - 2) {
-                return null;
-              }
+            {/* 3. ACTIVE MIDDLE SEGMENT (1 visible intermediate link at a time) */}
+            {middleSegments.length > 0 && activeMiddleSlug && (
+              <>
+                <li aria-hidden="true">
+                  <ChevronRight className="w-3.5 h-3.5 text-ink-muted/60" />
+                </li>
+                <li>
+                  <Link
+                    href={activeMiddleHref}
+                    className="hover:text-concentra-purple transition-colors"
+                  >
+                    {formatTitle(activeMiddleSlug)}
+                  </Link>
+                </li>
+              </>
+            )}
 
-              const href = `/${pathNames.slice(0, index + 1).join("/")}`;
-              const itemTitle = link[0].toUpperCase() + link.slice(1).replace(/-/g, " ");
-              const isLast = index === pathNames.length - 1;
+            {/* 4. RIGHT COLLAPSED BUTTON ("...") — Compresses current & expands deeper parent */}
+            {hasCollapsedRight && (
+              <>
+                <li aria-hidden="true">
+                  <ChevronRight className="w-3.5 h-3.5 text-ink-muted/60" />
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setFocusedMiddleIndex(safeIndex + 1)}
+                    title={`Show ${rightHiddenLabel}`}
+                    aria-label={`Expand ${rightHiddenLabel}`}
+                    className="flex items-center justify-center px-1.5 py-0.5 bg-surface-muted hover:bg-concentra-purple hover:text-white border border-border-subtle text-industrial-slate transition-colors cursor-pointer"
+                  >
+                    <MoreHorizontal className="w-3.5 h-3.5" />
+                  </button>
+                </li>
+              </>
+            )}
 
-              return (
-                <React.Fragment key={index}>
-                  <li className="text-slate-400">
-                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                  </li>
-                  <li>
-                    {!isLast ? (
-                      <Link href={href} className="hover:text-concentra-green transition-colors">
-                        {itemTitle}
-                      </Link>
-                    ) : (
-                      <span className="text-slate-900 font-semibold cursor-default">
-                        {itemTitle}
-                      </span>
-                    )}
-                  </li>
-                </React.Fragment>
-              );
-            })}
+            {/* 5. ALWAYS EXPANDED: Last / Current Location */}
+            {lastSegment && (
+              <>
+                <li aria-hidden="true">
+                  <ChevronRight className="w-3.5 h-3.5 text-ink-muted/60" />
+                </li>
+                <li>
+                  <span className="text-concentra-purple font-extrabold cursor-default">
+                    {formatTitle(lastSegment)}
+                  </span>
+                </li>
+              </>
+            )}
           </ol>
         </nav>
       </div>

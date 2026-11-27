@@ -4,7 +4,7 @@ import { ArrowRight, Check } from "lucide-react";
 
 export default function CompanyIntro() {
   return (
-    <section className="w-full  relative z-20">
+    <section className="w-full bg-white border-y border-border-subtle relative z-20">
       
       {/* --- TOP SECTION: Intro Grid --- */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">

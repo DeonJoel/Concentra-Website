@@ -57,7 +57,7 @@ export default function QualityCertificates() {
   };
 
   return (
-    <section className="w-full py-16 md:py-[105px] bg-white relative z-30">
+    <section className="w-full py-16 md:py-[105px] bg-white border-y border-border-subtle relative z-30">
       
       {/* MASTER CONTAINER: Center-Locked Max Width */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

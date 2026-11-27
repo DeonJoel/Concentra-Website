@@ -1,25 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Manrope } from "next/font/google";
 import "@/app/globals.css";
-import Navbar from "@/components/shared/Navbar"; // 1. Import the Navbar
-import GridOverlay from "@/components/shared/GridOverlay"; // 2. Import the Grid
-import Footer from "@/components/shared/Footer"; // 3. Import the Footer
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
 });
 
-// 2. Updated to Concentra Branding
 export const metadata: Metadata = {
   title: "Concentra Precision Technologies",
-  description: "Next-Generation Spindle Technology & Precision Machining.",
+  description:
+    "Precision components, CNC machining, and engineered spindle assemblies since 1995.",
 };
 
 export default function RootLayout({
@@ -30,20 +31,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-
-        {/* 1. Global Navbar at the top of every page */}
+      <body className="min-h-full flex flex-col bg-surface-muted text-industrial-slate">
         <Navbar />
-        {/* The Dynamic Breadcrumb*/}
         <Breadcrumb />
-
-        {/* 2. Inject the GridOverlay here */}
-        {/* <GridOverlay /> */}
-        {children}
-
-        {/* 3. Global Footer at the bottom of every page */}
+        <div className="flex-1 flex flex-col">{children}</div>
         <Footer />
       </body>
     </html>
