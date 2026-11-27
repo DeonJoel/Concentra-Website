@@ -126,3 +126,122 @@ To use the admin functions and RFQ workflows:
 ---
 
 Made for Concentra Precision Technologies with a secure public site and admin portal.
+
+```
+concentra-portal
+├─ .env.local
+├─ AGENTS.md
+├─ eslint.config.mjs
+├─ next.config.ts
+├─ other or extra
+│  ├─ admin
+│  │  └─ enquiries
+│  │     └─ page.tsx
+│  ├─ cutting-tools
+│  │  └─ page.tsx
+│  ├─ enquiry
+│  │  ├─ Cocention code
+│  │  └─ page.tsx
+│  ├─ special-purpose-machines
+│  │  └─ page.tsx
+│  └─ tool-holding
+│     └─ page.tsx
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ public
+│  ├─ banner1.jpg
+│  ├─ blueprint-placeholder.png
+│  ├─ Concentra_LOGO.png
+│  ├─ file.svg
+│  ├─ globe.svg
+│  ├─ next.svg
+│  ├─ vercel.svg
+│  └─ window.svg
+├─ README.md
+├─ src
+│  ├─ app
+│  │  ├─ (public)
+│  │  │  ├─ careers
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ company
+│  │  │  │  ├─ about
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ certifications
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ facilities
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ quality
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ contact-us
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ layout.tsx
+│  │  │  ├─ page.tsx
+│  │  │  ├─ request-quote
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ services
+│  │  │  │  ├─ balancing
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ cast-iron
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ grinding
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ horizontal-machining
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  ├─ turning
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  └─ vertical-machining
+│  │  │  │     └─ page.tsx
+│  │  │  └─ solutions
+│  │  │     ├─ gauges
+│  │  │     │  └─ page.tsx
+│  │  │     ├─ page.tsx
+│  │  │     ├─ precision-components
+│  │  │     │  ├─ aerospace
+│  │  │     │  │  └─ page.tsx
+│  │  │     │  ├─ automotive
+│  │  │     │  │  └─ page.tsx
+│  │  │     │  ├─ custom-fixtures
+│  │  │     │  │  └─ page.tsx
+│  │  │     │  ├─ medical
+│  │  │     │  │  └─ page.tsx
+│  │  │     │  ├─ page.tsx
+│  │  │     │  └─ valves-pumps
+│  │  │     │     └─ page.tsx
+│  │  │     └─ spindles
+│  │  │        ├─ dental-milling
+│  │  │        │  └─ page.tsx
+│  │  │        ├─ engraving-milling
+│  │  │        │  └─ page.tsx
+│  │  │        ├─ machining-center
+│  │  │        │  └─ page.tsx
+│  │  │        ├─ page.tsx
+│  │  │        └─ robot-parts
+│  │  │           └─ page.tsx
+│  │  ├─ favicon.ico
+│  │  ├─ favicon1.ico
+│  │  └─ globals.css
+│  ├─ components
+│  │  ├─ home
+│  │  │  ├─ CompanyIntro.tsx
+│  │  │  ├─ GlobalReach.tsx
+│  │  │  ├─ HeroSlider.tsx
+│  │  │  ├─ OurExpertise.tsx
+│  │  │  ├─ ProcessBanner.tsx
+│  │  │  ├─ QualityCertificates.tsx
+│  │  │  └─ TrustedBy.tsx
+│  │  └─ shared
+│  │     ├─ Breadcrumb.tsx
+│  │     ├─ CADViewer.tsx
+│  │     ├─ Footer.tsx
+│  │     ├─ GridOverlay.tsx
+│  │     ├─ Navbar.tsx
+│  │     └─ NavDropdowns.tsx
+│  ├─ lib
+│  │  └─ utils.ts
+│  └─ proxy.ts
+└─ tsconfig.json
+
+```
